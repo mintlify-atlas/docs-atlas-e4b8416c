@@ -1,0 +1,74 @@
+---
+title: "GPT Image 2 prompting fundamentals"
+description: "Seven principles for reliable GPT Image 2 prompts: structure, specificity, aspect ratio, quoted text, and quality settings for production output."
+---
+
+Reliable output from GPT Image 2 starts with intentional prompts. The model responds well to clear structure, concrete language, and a few key configuration choices made before you write a single word. The seven principles below apply equally whether you're using the CLI, the Python SDK, or the REST API directly.
+
+<AccordionGroup>
+  <Accordion title="1. Structure then goal">
+    Order your prompt from context to subject to constraints: describe the background or scene first, then introduce the primary subject, then add key details, and finally state any constraints or intended use. This ordering gives the model the spatial and tonal context it needs before committing to the main element.
+
+    **Example structure:** `Dimly lit urban alley at dusk, rain-slicked pavement — a neon ramen shop sign glowing red — close crop, cinematic aspect ratio — for a restaurant delivery app hero image`
+  </Accordion>
+
+  <Accordion title="2. Any format works; consistency matters more">
+    GPT Image 2 handles minimal phrases, full descriptive sentences, JSON-style key-value lists, and tag-based prompts equally well. Pick one format and stick to it across a project. Switching formats mid-campaign introduces variance that makes it harder to iterate predictably.
+
+    | Format | Example |
+    | --- | --- |
+    | Minimal | `neon ramen shop, rainy alley, cinematic` |
+    | Descriptive | `A neon ramen shop sign glowing red in a rain-soaked urban alley at dusk, cinematic framing` |
+    | JSON-style | `{"scene": "rainy alley", "subject": "ramen shop sign", "lighting": "neon red", "style": "cinematic"}` |
+    | Instruction-style | `Generate a cinematic image of a neon ramen shop sign in a rainy alley at dusk` |
+  </Accordion>
+
+  <Accordion title="3. Specificity and quality cues">
+    Vague prompts produce average results. Name materials, shapes, textures, and medium explicitly. If you want a photographic result, say `photorealistic` directly — the model does not infer it from subject matter alone. Adjectives like `sharp`, `high detail`, `studio lighting`, and `macro lens` all shift output meaningfully.
+
+    **Instead of:** `a shoe`  
+    **Try:** `a photorealistic white leather sneaker on a matte grey studio background, macro lens, even studio lighting, sharp product shot`
+  </Accordion>
+
+  <Accordion title="4. Put required text in straight quotes">
+    When your image must display exact copy — a slogan, a price, a brand name, kanji — wrap it in straight quotation marks (`"`) inside the prompt. This signals to the model that those characters are literal strings to render, not stylistic inspiration.
+
+    **Example:** `Design a café chalkboard menu with the headline "Fresh Roast Daily" and price "¥450"`
+
+    See [Typography and text](/prompting/typography-and-text) for a full walkthrough including multi-language examples.
+  </Accordion>
+
+  <Accordion title="5. Choose aspect ratio early">
+    Aspect ratio is a compositional decision, not a crop. Decide portrait, landscape, or square before writing your prompt, then reinforce the choice in the prompt text itself — not just in the `--size` flag. A prompt written for landscape framing will feel cramped when forced into portrait dimensions.
+
+    **Reinforce in prompt:** `…wide panoramic composition, 16:9 landscape framing…`  
+    **Set in CLI:** `--size landscape`
+  </Accordion>
+
+  <Accordion title="6. One hero, supporting cast">
+    Images with a single clearly identified primary subject outperform multi-subject prompts. Frame everything else as context or supporting elements. If you need multiple focal points, use separate generations and composite them.
+
+    **Instead of:** `a dog and a woman and a bicycle in a park`  
+    **Try:** `a golden retriever in the foreground of a sun-dappled park, a woman reading on a bench behind it, soft bokeh background`
+  </Accordion>
+
+  <Accordion title="7. Use quality=high for text, diagrams, and dense layouts">
+    The default quality setting trades fine detail for speed. Switch to `quality="high"` (or `--quality high` in the CLI) whenever your image contains in-image text, small labels, multi-panel layouts, dense diagrams, or Chinese/Japanese/Korean characters. At the default quality level these elements degrade visibly.
+
+    ```bash
+    gpt-image -p "your prompt" --quality high -f out.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<CardGroup cols={3}>
+  <Card title="Text-to-image generation" href="/prompting/text-to-image" icon="image">
+    Prompt formats, size and quality options, and CLI and SDK examples for generating images from text.
+  </Card>
+  <Card title="Reference-image editing" href="/prompting/reference-editing" icon="pencil">
+    Single-reference, multi-reference, and mask inpainting workflows using the edits endpoint.
+  </Card>
+  <Card title="Typography and text" href="/prompting/typography-and-text" icon="type">
+    How to reliably render in-image text and multilingual copy with GPT Image 2.
+  </Card>
+</CardGroup>

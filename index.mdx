@@ -1,133 +1,81 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
-icon: 'star'
+title: "GPT Image 2 Skill — Home"
+description: "Generate and edit images with OpenAI GPT Image 2 via CLI, agent skill, and a curated library of 162 copy-paste prompts across 30+ categories."
 ---
 
-## Setting up
+GPT Image 2 Skill gives you three tools in one: a **command-line interface** for text-to-image generation and reference-image editing, an **agentic skill** that plugs directly into Claude Code, Codex, and other skill-capable runtimes, and a **curated prompt gallery** of 162 production-quality prompts organized across 30+ creative categories.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="bolt" href="/quickstart">
+    Generate your first image in under a minute with the CLI or OpenAI SDK.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Installation" icon="download" href="/installation">
+    Install via uvx, uv tool install, or as an agent skill for Claude Code or Codex.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="CLI Reference" icon="terminal" href="/cli/commands">
+    Every command, flag, and option documented with real examples and default values.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Prompt Gallery" icon="images" href="/gallery/index">
+    162 curated prompts across anime, gaming, UI mockups, photography, and more.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What you can do
 
-Everything you need to create world-class documentation.
+<CardGroup cols={3}>
+  <Card title="Text to image" icon="wand-magic-sparkles" href="/prompting/text-to-image">
+    Generate images from a single prompt using `POST /v1/images/generations`.
+  </Card>
+  <Card title="Reference editing" icon="pen-to-square" href="/prompting/reference-editing">
+    Restyle or combine images with one or more reference files via the edits endpoint.
+  </Card>
+  <Card title="Mask inpainting" icon="crop" href="/cli/commands">
+    Regenerate specific regions using an alpha-channel PNG mask.
+  </Card>
+  <Card title="Agentic skill" icon="robot" href="/skill/overview">
+    Install as a plugin into Claude Code, Codex, or any skill-capable agent runtime.
+  </Card>
+  <Card title="Prompt craft" icon="pen-nib" href="/prompting/fundamentals">
+    Learn the seven fundamentals that make GPT Image 2 prompts reliable.
+  </Card>
+  <Card title="Gallery atlas" icon="book-open" href="/gallery/how-to-use">
+    Browse 162 prompts by category and copy them directly into the CLI or SDK.
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Get started in 3 steps
 
-## Make your content agent ready
+<Steps>
+  <Step title="Install the CLI">
+    Run directly without installing, or add to your PATH permanently:
 
-Make your docs work for humans and AI agents alike.
+    ```bash
+    # Run without installing
+    uvx --from git+https://github.com/wuyoscar/gpt_image_2_skill gpt-image -p "a cat astronaut"
 
-<Columns cols={2}>
-  <Card
-    title="Prompt component"
-    icon="robot"
-    href="/agent-ready/prompt"
-  >
-    Embed shareable AI prompts readers can copy or open in Cursor.
-  </Card>
-  <Card
-    title="Visibility"
-    icon="eye"
-    href="/agent-ready/visibility"
-  >
-    Show different content to humans and agents reading your docs.
-  </Card>
-  <Card
-    title="Contextual menu"
-    icon="bolt"
-    href="/agent-ready/contextual"
-  >
-    Give readers one-click access to Claude, ChatGPT, Cursor, and more.
-  </Card>
-  <Card
-    title="AI coding tools"
-    icon="wand-magic-sparkles"
-    href="/ai-tools/claude-code"
-  >
-    Set up Claude Code, Cursor, or Windsurf with Mintlify's skill.
-  </Card>
-</Columns>
+    # Or install globally
+    uv tool install git+https://github.com/wuyoscar/gpt_image_2_skill
+    ```
+  </Step>
+  <Step title="Set your API key">
+    Export your OpenAI API key, or add it to `~/.env`:
 
-## Need inspiration?
+    ```bash
+    export OPENAI_API_KEY=sk-...
+    # or add OPENAI_API_KEY=sk-... to ~/.env
+    ```
+  </Step>
+  <Step title="Generate your first image">
+    Run any prompt from the gallery or write your own:
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+    ```bash
+    gpt-image -p "a photorealistic convenience store at 10pm" --size 1k --quality high -f store.png
+    ```
+
+    The output path is printed on stdout. Exit code `0` means success.
+  </Step>
+</Steps>
+
+<Note>
+  The CLI reads `OPENAI_API_KEY` from your environment or `~/.env`. Exit codes: `0` success · `1` API/moderation error · `2` bad arguments or missing key.
+</Note>

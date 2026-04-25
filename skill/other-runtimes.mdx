@@ -1,0 +1,102 @@
+---
+title: 'Install gpt-image skill in other agent runtimes'
+description: 'Use the generic symlink install to add the gpt-image skill to OpenClaw, Hermes Agent, or any agent runtime that supports a skills directory.'
+---
+
+Any agent runtime that loads skills from a local directory can use the `gpt-image` skill. The installation procedure is the same regardless of runtime: clone the repository, set `AGENT_SKILLS_DIR` to the path your runtime reads from, and create a symlink. The symlink approach means the skill always reflects the latest state of the local clone — a `git pull` is all that is needed to update.
+
+Compatible runtimes include **OpenClaw**, **Hermes Agent**, and any other runtime that discovers skills by scanning a configurable directory for folders containing a skill manifest.
+
+## Prerequisites
+
+- Git installed.
+- `OPENAI_API_KEY` set in your environment or in `~/.env`.
+- Python 3.11 or later (the generation script requires it).
+- The skills directory path for your runtime (check your runtime's documentation).
+
+## Installation
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the repository to a location of your choice:
+
+    ```bash
+    git clone https://github.com/wuyoscar/gpt_image_2_skill.git
+    cd gpt_image_2_skill
+    ```
+  </Step>
+
+  <Step title="Set the skills directory for your runtime">
+    Export `AGENT_SKILLS_DIR` with the path your runtime reads skills from. Replace the example path with the actual path for your runtime:
+
+    ```bash
+    # Examples by runtime:
+    #   OpenClaw:      ~/.openclaw/skills
+    #   Hermes Agent:  ~/.hermes/skills
+    #   Other:         check your runtime's documented skills directory
+    export AGENT_SKILLS_DIR="/path/to/your/agent/skills"
+    ```
+
+    <Note>
+      For Codex, use `~/.codex/skills`. For Claude Code, use the plugin install commands described in the [Claude Code guide](/skill/claude-code) instead of this procedure.
+    </Note>
+  </Step>
+
+  <Step title="Create the skills directory and symlink the skill">
+    ```bash
+    mkdir -p "$AGENT_SKILLS_DIR"
+    ln -s "$PWD/skills/gpt-image" "$AGENT_SKILLS_DIR/gpt-image"
+    ```
+
+    The symlink points directly into the cloned repository. The runtime sees `$AGENT_SKILLS_DIR/gpt-image/SKILL.md` and loads the skill from there.
+  </Step>
+
+  <Step title="Restart your runtime">
+    Restart the agent runtime so it rescans the skills directory and picks up the newly linked `gpt-image` skill. The exact restart procedure depends on your runtime.
+  </Step>
+
+  <Step title="Verify the skill is loaded">
+    Ask your runtime what skills are available. You should see `gpt-image` listed. You can also run the script directly to confirm Python and the OpenAI SDK are accessible:
+
+    ```bash
+    uv run "$AGENT_SKILLS_DIR/gpt-image/scripts/generate.py" --help
+    ```
+  </Step>
+</Steps>
+
+## How the skill is discovered
+
+When your runtime starts, it reads `SKILL.md` from each subdirectory under `AGENT_SKILLS_DIR`. For `gpt-image`, that manifest describes the skill's capabilities, CLI flags, endpoint-selection rules, and reference-loading policy. The runtime then makes the generation script available for invocation:
+
+```bash
+uv run "$AGENT_SKILLS_DIR/gpt-image/scripts/generate.py" -p "PROMPT" [options]
+```
+
+For runtimes that expose a direct CLI alias, the equivalent `gpt-image` command works identically.
+
+## Updating
+
+Because the skill directory is a symlink into a local Git clone, updating is a single command:
+
+```bash
+cd gpt_image_2_skill && git pull
+```
+
+No reinstallation or relinking is needed. The updated files are available immediately the next time your runtime invokes the skill.
+
+<Warning>
+  If your runtime caches the skill manifest at startup, restart the runtime after pulling updates to ensure it reads the new `SKILL.md`.
+</Warning>
+
+## Compatible runtimes
+
+| Runtime | Skills directory (default) |
+|---------|---------------------------|
+| OpenClaw | `~/.openclaw/skills` |
+| Hermes Agent | `~/.hermes/skills` |
+| Codex | `~/.codex/skills` (prefer `$skill-installer` — see [Codex guide](/skill/codex)) |
+| Claude Code | Plugin system — see [Claude Code guide](/skill/claude-code) |
+
+<Tip>
+  Keep the cloned repository outside your runtime's skills directory so that `git pull` does not conflict with runtime-managed files. The symlink keeps everything in sync without mixing the two locations.
+</Tip>

@@ -1,0 +1,55 @@
+---
+title: "Typography and poster prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for typographic posters, event flyers, editorial layouts, and text-heavy designs requiring quality=high for crisp rendering."
+---
+
+GPT Image 2 renders display type, body copy, and mixed typographic layouts with high fidelity at `quality=high`. The prompts below cover three distinct poster and editorial formats: a risograph-printed concert flyer, a vintage travel poster, and a magazine spread. Each prompt names typeface characteristics, print techniques, and layout intent to guide the model toward a finished, print-ready composition rather than a loose approximation.
+
+<Note>
+  All text-heavy prompts in this category require `--quality high`. Lower quality settings significantly degrade letter rendering and produce unreadable body copy.
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Risograph concert poster" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    A risograph-printed concert poster for a fictional indie band called "The Hollow Keys" playing at The Moth Club on October 14. Bold geometric shapes in teal and coral, halftone dots, distressed texture. Title text "THE HOLLOW KEYS" in chunky display font at top, venue and date in clean sans-serif below, support act "Pale Wren" in small type. 3:4 portrait format, print-ready feel.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A risograph-printed concert poster for a fictional indie band called \"The Hollow Keys\" playing at The Moth Club on October 14. Bold geometric shapes in teal and coral, halftone dots, distressed texture. Title text \"THE HOLLOW KEYS\" in chunky display font at top, venue and date in clean sans-serif below, support act \"Pale Wren\" in small type. 3:4 portrait format, print-ready feel." \
+      --size 1024x1536 \
+      --quality high \
+      -f concert-poster.png
+    ```
+  </Accordion>
+
+  <Accordion title="Vintage travel poster" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    A vintage travel poster for Kyoto in the style of 1930s railway posters. Flat graphic illustration of a temple gate framed by autumn maples. Text at top: "KYOTO" in bold serif, subtext: "Japan" below. Rich burgundy, gold, and forest green palette. Art Deco borders, cream background.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A vintage travel poster for Kyoto in the style of 1930s railway posters. Flat graphic illustration of a temple gate framed by autumn maples. Text at top: \"KYOTO\" in bold serif, subtext: \"Japan\" below. Rich burgundy, gold, and forest green palette. Art Deco borders, cream background." \
+      --size 1024x1536 \
+      --quality high \
+      -f kyoto-travel-poster.png
+    ```
+  </Accordion>
+
+  <Accordion title="Magazine editorial spread" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A magazine editorial spread layout. Left page: full-bleed photograph of a minimalist apartment. Right page: article title "The Art of Empty Space" in large elegant serif, standfirst in medium weight, body copy in two columns, pull quote in accent color. Clean white margins, subtle grid.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A magazine editorial spread layout. Left page: full-bleed photograph of a minimalist apartment. Right page: article title \"The Art of Empty Space\" in large elegant serif, standfirst in medium weight, body copy in two columns, pull quote in accent color. Clean white margins, subtle grid." \
+      --size 1536x1024 \
+      --quality high \
+      -f editorial-spread.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Naming print production techniques — risograph, halftone dots, distressed texture — produces more authentic results than describing the visual outcome alone. For travel posters, referencing a specific decade and genre ("1930s railway posters") is more effective than "vintage style".
+</Tip>

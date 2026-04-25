@@ -1,0 +1,55 @@
+---
+title: "Photography prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for photorealistic photography: portraits, street photography, landscape, architectural, and documentary styles."
+---
+
+GPT Image 2 produces photorealistic images with strong command of camera optics, film grain, light temperature, and lens characteristics. To activate the most realistic output, include explicit photographic framing in your prompt — phrases like "photorealistic", "real photograph", or "taken on a real camera" signal the model to prioritize physical plausibility over painterly or stylized aesthetics. The three prompts below cover street documentary, environmental portraiture, and architectural photography.
+
+<Note>
+  Adding "photorealistic", "real photograph", or "taken on a real camera" to any of these prompts anchors the output in a documentary register and suppresses painterly or illustrative interpretations.
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Street photography — rainy Tokyo" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A photorealistic street photography shot of a rainy evening in Tokyo's Shinjuku district. Shot on 35mm film with a 50mm lens, slight grain, neon signs reflected on wet cobblestones, a lone figure under an umbrella mid-step, motion blur on passing traffic, color temperature 3200K tungsten warmth mixed with cool blue rain light. Documentary style, no staging.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A photorealistic street photography shot of a rainy evening in Tokyo's Shinjuku district. Shot on 35mm film with a 50mm lens, slight grain, neon signs reflected on wet cobblestones, a lone figure under an umbrella mid-step, motion blur on passing traffic, color temperature 3200K tungsten warmth mixed with cool blue rain light. Documentary style, no staging." \
+      --size 1536x1024 \
+      --quality high \
+      -f tokyo-street-rain.png
+    ```
+  </Accordion>
+
+  <Accordion title="Environmental portrait — master bookbinder" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    A photorealistic environmental portrait of a 70-year-old master bookbinder in his workshop. Natural window light from the left illuminates weathered hands binding a leather-covered book. Shallow depth of field, background rows of spines softly blurred, expression quietly focused. Shot on a medium format digital back, clean editorial look.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A photorealistic environmental portrait of a 70-year-old master bookbinder in his workshop. Natural window light from the left illuminates weathered hands binding a leather-covered book. Shallow depth of field, background rows of spines softly blurred, expression quietly focused. Shot on a medium format digital back, clean editorial look." \
+      --size 1024x1536 \
+      --quality high \
+      -f bookbinder-portrait.png
+    ```
+  </Accordion>
+
+  <Accordion title="Architectural photography — modernist library" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A photorealistic architectural photograph of a modernist library interior — soaring concrete atrium, skylights flooding the space with diffused noon light, rows of reading tables with individual lamps, small figures providing scale. Wide angle 17mm lens, architectural tilt-shift perspective correction, muted palette of concrete gray and warm oak.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A photorealistic architectural photograph of a modernist library interior — soaring concrete atrium, skylights flooding the space with diffused noon light, rows of reading tables with individual lamps, small figures providing scale. Wide angle 17mm lens, architectural tilt-shift perspective correction, muted palette of concrete gray and warm oak." \
+      --size 1536x1024 \
+      --quality high \
+      -f modernist-library.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Naming the lens focal length and film stock (35mm film, 50mm lens; medium format digital back; 17mm wide angle) gives the model enough optical context to produce consistent depth of field, perspective distortion, and grain characteristics. Color temperature values like "3200K tungsten warmth" are more precise than adjectives like "warm light" and produce more consistent results across runs.
+</Tip>

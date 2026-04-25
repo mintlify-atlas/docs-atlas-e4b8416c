@@ -1,0 +1,67 @@
+---
+title: "Rendering text and typography with GPT Image 2"
+description: "How to reliably render in-image text with GPT Image 2: quote required strings in your prompt and use quality=high for legible results in any language."
+---
+
+GPT Image 2 can render in-image text — slogans, prices, labels, kanji — with high accuracy when you follow two rules. Both rules are required; skipping either one produces unreliable or illegible results, especially for non-Latin scripts and small type sizes.
+
+## Rule 1: Put required text in straight quotes
+
+Wrap every string that must appear verbatim in your image in straight quotation marks (`"`). This signals to the model that the enclosed characters are literal copy to render, not thematic inspiration. Without quotes, the model may paraphrase, omit, or stylise the text.
+
+**Without quotes (unreliable):**
+```text
+Design a tea poster with the headline Mountain River Tea and price 16 yuan
+```
+
+**With quotes (reliable):**
+```text
+Design a tea poster. Exact copy: "山川茶事" as the headline, "冷泡系列" as the subtitle, "中杯 16 元" as the price.
+```
+
+<Tip>
+  Use the word `Exact copy:` before listing quoted strings. It reinforces to the model that these are literal rendering targets, not stylistic suggestions.
+</Tip>
+
+## Rule 2: Always use `--quality high` for images with text
+
+Text rendering degrades visibly at the default quality level. Characters become blurry, strokes merge, and small labels become illegible. Set `--quality high` (or `quality="high"` in the SDK) for any image that contains in-image text.
+
+This applies to:
+- Latin text at any size
+- CJK characters (Chinese, Japanese, Korean)
+- Prices, dates, and numeric labels
+- Multi-line copy or dense typographic layouts
+- Small captions or watermark-style text
+
+## Example: Chinese tea poster
+
+### Prompt
+
+```text
+Design a 3:4 portrait tea poster. Soft green watercolour wash background, minimal layout, generous whitespace. Exact copy: "山川茶事" as the large headline at top, "冷泡系列" centred below it, "中杯 16 元" at the bottom as the price. Traditional brush-style typeface.
+```
+
+### CLI command
+
+```bash
+gpt-image -p 'Design a 3:4 portrait tea poster. Soft green watercolour wash background, minimal layout, generous whitespace. Exact copy: "山川茶事" as the large headline at top, "冷泡系列" centred below it, "中杯 16 元" at the bottom as the price. Traditional brush-style typeface.' \
+  --size portrait --quality high -f poster.png
+```
+
+<Note>
+  The outer prompt is wrapped in single quotes so that the inner straight double-quotes are passed to the model without shell escaping. Alternatively, escape them with backslashes: `\"`.
+</Note>
+
+## Why quality matters for text
+
+At the default quality setting the model allocates fewer diffusion steps to fine detail. For photographic scenes this is often acceptable. For text, where every pixel in a character stroke carries meaning, the reduction is immediately visible:
+
+| Quality | Result |
+| --- | --- |
+| `low` or `medium` | Characters may blur, merge, or be misshapen at small sizes |
+| `high` | Strokes are sharp, characters are individually legible, CJK glyphs render correctly |
+
+<Warning>
+  Even at `quality=high`, very small point sizes (equivalent to under ~12pt in the output image) can still be unreliable. Keep required copy at a reasonable display size and avoid long strings of fine print.
+</Warning>

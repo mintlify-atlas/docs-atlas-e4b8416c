@@ -1,0 +1,51 @@
+---
+title: "Anime & Manga prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for anime and manga styles including fashion portraits, action stills, manga spreads, and expression grids."
+---
+
+GPT Image 2 handles anime and manga styles with high fidelity — crisp line art, cel shading, luminous eyes, and the distinct visual language of specific studios and series. The prompts below cover four common use cases: editorial fashion portraits, high-energy action stills, multi-panel expression grids, and manga page layouts. Each prompt is written to be used verbatim, with style direction, composition notes, and palette cues already included.
+
+<AccordionGroup>
+  <Accordion title="Anime fashion portrait" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    Create a tasteful portrait-oriented anime fashion illustration of an adult woman, age 24, with a cute playful expression, looking at the camera in a cozy European cafe at golden hour. She wears a cream blouse, charcoal pleated skirt, tailored cropped jacket, sheer black stockings, loafers, and a small ribbon hair clip; she is seated sideways at a small marble table with latte art, a sketchbook, and warm window light. Composition: three-quarter fashion portrait, elegant legs visible but relaxed and non-explicit, wholesome editorial mood, no nudity, no lingerie, no school uniform, no explicit pose, adult character only. Use polished modern anime rendering, crisp line art, luminous eyes, soft cel shading, subtle fabric texture, gentle blush, background bokeh, and a refined magazine-cover color palette.
+    ```
+
+    ```bash CLI
+    gpt-image -p "Create a tasteful portrait-oriented anime fashion illustration of an adult woman, age 24, with a cute playful expression, looking at the camera in a cozy European cafe at golden hour. She wears a cream blouse, charcoal pleated skirt, tailored cropped jacket, sheer black stockings, loafers, and a small ribbon hair clip; she is seated sideways at a small marble table with latte art, a sketchbook, and warm window light. Composition: three-quarter fashion portrait, elegant legs visible but relaxed and non-explicit, wholesome editorial mood, no nudity, no lingerie, no school uniform, no explicit pose, adult character only. Use polished modern anime rendering, crisp line art, luminous eyes, soft cel shading, subtle fabric texture, gentle blush, background bokeh, and a refined magazine-cover color palette." \
+      --size 1024x1536 \
+      --quality high \
+      -f anime-fashion-portrait.png
+    ```
+  </Accordion>
+
+  <Accordion title="MAPPA-style action still" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    An anime action still in the visual style of MAPPA's Jujutsu Kaisen (2020 TV anime). Landscape 16:9. A silver-white-haired young man in a dark navy school-uniform jacket, a blue blindfold across his eyes, in a mid-fight stance — one palm extended outward releasing a swirling dense-blue energy sphere with lightning-like crackles around its edge. Opposite him, a demonic shadow creature made of liquid black mass with multiple eyes lunges from the right. Backdrop: ruined urban street at dusk, shattered asphalt, cracked neon kanji sign "呪術" in split red LED, destroyed vehicles, rubble suspended mid-air by the shockwave, rain particles caught mid-flight. Art direction: MAPPA-style digital 2D animation — heavy cel shading, crisp line-art, rim-light on both figures, motion-blur streaks around the energy sphere. Palette of deep navy, electric cyan, crimson splashes. Kinetic-impact composition in the tradition of JJK's Shibuya arc.
+    ```
+
+    ```bash CLI
+    gpt-image -p "An anime action still in the visual style of MAPPA's Jujutsu Kaisen (2020 TV anime). Landscape 16:9. A silver-white-haired young man in a dark navy school-uniform jacket, a blue blindfold across his eyes, in a mid-fight stance — one palm extended outward releasing a swirling dense-blue energy sphere with lightning-like crackles around its edge. Opposite him, a demonic shadow creature made of liquid black mass with multiple eyes lunges from the right. Backdrop: ruined urban street at dusk, shattered asphalt, cracked neon kanji sign 呪術 in split red LED, destroyed vehicles, rubble suspended mid-air by the shockwave, rain particles caught mid-flight. Art direction: MAPPA-style digital 2D animation — heavy cel shading, crisp line-art, rim-light on both figures, motion-blur streaks around the energy sphere. Palette of deep navy, electric cyan, crimson splashes. Kinetic-impact composition in the tradition of JJK's Shibuya arc." \
+      --size 1536x1024 \
+      --quality high \
+      -f mappa-action-still.png
+    ```
+  </Accordion>
+
+  <Accordion title="16-panel expression grid" description="Size: square · Quality: high · Source: Curated">
+    ```
+    Create a 16-panel expression grid of a silver-haired, blue-eyed anime girl. Her face shape, hairstyle, and clothing must remain highly consistent across all panels. The 16 expressions should include: happy, sad, angry, surprised, shy, speechless, evil grin, contemplative, curious, proud, wronged, disdainful, confused, scared, crying, and a heart expression.
+    ```
+
+    ```bash CLI
+    gpt-image -p "Create a 16-panel expression grid of a silver-haired, blue-eyed anime girl. Her face shape, hairstyle, and clothing must remain highly consistent across all panels. The 16 expressions should include: happy, sad, angry, surprised, shy, speechless, evil grin, contemplative, curious, proud, wronged, disdainful, confused, scared, crying, and a heart expression." \
+      --size 1024x1024 \
+      --quality high \
+      -f expression-grid.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  For character consistency across multiple images, include a detailed description of hair color, eye color, face shape, and clothing in every prompt. The expression grid prompt above demonstrates this pattern — specify what must stay constant before listing what should vary.
+</Tip>

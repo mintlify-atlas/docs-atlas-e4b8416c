@@ -1,0 +1,101 @@
+---
+title: "Reference-image editing with GPT Image 2"
+description: "Restyle images with gpt-image-2 edits: single-reference, multi-reference compositing, and mask inpainting — three modes with CLI and SDK examples."
+---
+
+Reference-image editing lets you use one or more existing images as visual anchors while a text prompt directs the change. Passing any `-i` flag routes the request to the `POST /v1/images/edits` endpoint instead of the generations endpoint. The three modes — single-reference, multi-reference, and mask inpainting — cover most production editing workflows.
+
+## Single-reference editing
+
+Provide one reference image and a prompt describing the desired transformation. The model retains the composition and key elements of the source while applying the described changes.
+
+```bash
+gpt-image -p "Make it a winter evening with heavy snowfall" \
+  -i chess.png --quality high -f chess-winter.png
+```
+
+The model preserves the chessboard scene and recolours the environment, adds snow, and shifts the lighting to match a winter evening.
+
+## Multi-reference editing
+
+Pass multiple `-i` flags to supply several reference images. The model combines or juxtaposes elements from all sources according to the prompt.
+
+```bash
+gpt-image -p "Place the dog next to the woman on the park bench, same lighting" \
+  -i woman.png -i dog.png --quality high -f combined.png
+```
+
+<Tip>
+  List references in the order you mention them in the prompt. The model uses positional correspondence when resolving ambiguous placement instructions.
+</Tip>
+
+## Mask inpainting
+
+Provide a mask file with `-m` to control which areas of the reference image the model regenerates. Mask convention:
+
+- **Opaque pixels** (white) — area is **preserved** exactly as-is
+- **Transparent pixels** (alpha = 0) — area is **regenerated** according to the prompt
+
+```bash
+gpt-image -p "replace sky with aurora borealis, purple and green" \
+  -i photo.jpg -m sky_mask.png --quality high -f aurora.png
+```
+
+In this example `sky_mask.png` has transparent pixels where the sky is and opaque pixels everywhere else, so only the sky region is regenerated.
+
+<Note>
+  Your mask file must be a PNG with an alpha channel. JPEG masks are not supported because the format does not carry transparency.
+</Note>
+
+## Python SDK
+
+<CodeGroup>
+
+```python Single reference
+from openai import OpenAI
+
+client = OpenAI()
+
+result = client.images.edit(
+    model="gpt-image-2",
+    image=[open("chess.png", "rb")],
+    prompt="Make it a winter evening with heavy snowfall",
+    size="1024x1024",
+    quality="high",
+)
+```
+
+```python Multi-reference
+from openai import OpenAI
+
+client = OpenAI()
+
+result = client.images.edit(
+    model="gpt-image-2",
+    image=[open("woman.png", "rb"), open("dog.png", "rb")],
+    prompt="Place the dog next to the woman on the park bench, same lighting",
+    size="1024x1024",
+    quality="high",
+)
+```
+
+```python Mask inpainting
+from openai import OpenAI
+
+client = OpenAI()
+
+result = client.images.edit(
+    model="gpt-image-2",
+    image=[open("photo.jpg", "rb")],
+    mask=open("sky_mask.png", "rb"),
+    prompt="replace sky with aurora borealis, purple and green",
+    size="1024x1024",
+    quality="high",
+)
+```
+
+</CodeGroup>
+
+<Warning>
+  Edits that attempt to alter the likeness of a real, identifiable person are typically refused with a 400 error. This applies to celebrity faces, public figures, and any reference image where a person is clearly identifiable. Use illustrated or anonymised subjects for styling workflows.
+</Warning>

@@ -1,0 +1,51 @@
+---
+title: "Fine art painting prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for fine art painting styles: oil, acrylic, impressionist, expressionist, classical realism, and contemporary painting."
+---
+
+GPT Image 2 reproduces fine art painting styles with strong fidelity to the conventions of each tradition — visible brushwork, characteristic palette ranges, and medium-specific texture. The most effective prompts name the movement or artist reference, describe the lighting, and specify the palette. The three prompts below cover 19th-century maritime realism, Impressionist plein air, and contemporary abstract expressionism.
+
+<AccordionGroup>
+  <Accordion title="Oil painting — 19th century maritime realism" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A photorealistic oil painting of an elderly fisherman mending nets at dusk, golden hour light catching the texture of weathered hands and rope, loose brushwork in the tradition of Sargent, warm amber and deep shadow palette, 19th century maritime realism
+    ```
+
+    ```bash CLI
+    gpt-image -p "A photorealistic oil painting of an elderly fisherman mending nets at dusk, golden hour light catching the texture of weathered hands and rope, loose brushwork in the tradition of Sargent, warm amber and deep shadow palette, 19th century maritime realism" \
+      --size 1536x1024 \
+      --quality high \
+      -f oil-painting-fisherman.png
+    ```
+  </Accordion>
+
+  <Accordion title="Impressionist oil painting" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    An impressionist oil painting of a sun-dappled garden party, women in white dresses under parasols, dappled light through trees, loose gestural brushwork, Monet-Renoir palette of lilac, peach, and emerald, painterly texture, plein air feel
+    ```
+
+    ```bash CLI
+    gpt-image -p "An impressionist oil painting of a sun-dappled garden party, women in white dresses under parasols, dappled light through trees, loose gestural brushwork, Monet-Renoir palette of lilac, peach, and emerald, painterly texture, plein air feel" \
+      --size 1536x1024 \
+      --quality high \
+      -f impressionist-garden-party.png
+    ```
+  </Accordion>
+
+  <Accordion title="Contemporary abstract expressionism" description="Size: square · Quality: high · Source: Curated">
+    ```
+    A contemporary abstract expressionist painting, large gestural brushstrokes in cobalt blue and burnt sienna, drips and texture, museum gallery lighting, canvas texture visible
+    ```
+
+    ```bash CLI
+    gpt-image -p "A contemporary abstract expressionist painting, large gestural brushstrokes in cobalt blue and burnt sienna, drips and texture, museum gallery lighting, canvas texture visible" \
+      --size 1024x1024 \
+      --quality high \
+      -f abstract-expressionist.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Artist and movement references anchor the style strongly. Adding a named palette (warm amber, lilac and peach, cobalt and sienna) further constrains the output toward a coherent look. Use `quality=high` for all fine art prompts — lower quality settings reduce the texture and brushwork detail that make these outputs distinctive.
+</Tip>

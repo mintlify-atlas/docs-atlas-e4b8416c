@@ -1,0 +1,51 @@
+---
+title: "Watercolor prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for watercolor illustration: botanical art, travel sketches, loose washes, and delicate transparent layering techniques."
+---
+
+Watercolor is one of the styles GPT Image 2 renders with particular nuance — transparent layering, wet-on-wet diffusion, visible paper grain, and the soft bloom of pigment at wash edges. The prompts below demonstrate three distinct watercolor subgenres: precise botanical illustration, loose travel sketching, and traditional still life. Each prompt names the paper behavior or technique (wet-on-wet, transparent layered washes) to reinforce the medium.
+
+<AccordionGroup>
+  <Accordion title="Botanical illustration" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    A delicate watercolor botanical illustration of cherry blossom branches, soft pink petals on cream paper, loose wet-on-wet washes, fine ink linework details, natural pigment diffusion, Japanese watercolor tradition
+    ```
+
+    ```bash CLI
+    gpt-image -p "A delicate watercolor botanical illustration of cherry blossom branches, soft pink petals on cream paper, loose wet-on-wet washes, fine ink linework details, natural pigment diffusion, Japanese watercolor tradition" \
+      --size 1024x1536 \
+      --quality high \
+      -f botanical-cherry-blossom.png
+    ```
+  </Accordion>
+
+  <Accordion title="Travel sketch" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A loose watercolor travel sketch of a Venetian canal at golden hour, gondolas on shimmering water, terracotta buildings, rough pencil underdrawing visible, warm wash palette of ochre and burnt sienna
+    ```
+
+    ```bash CLI
+    gpt-image -p "A loose watercolor travel sketch of a Venetian canal at golden hour, gondolas on shimmering water, terracotta buildings, rough pencil underdrawing visible, warm wash palette of ochre and burnt sienna" \
+      --size 1536x1024 \
+      --quality high \
+      -f watercolor-venice-canal.png
+    ```
+  </Accordion>
+
+  <Accordion title="Still life" description="Size: square · Quality: high · Source: Curated">
+    ```
+    A watercolor still life of summer fruit — peaches, figs, and a halved pomegranate on a linen cloth, soft diffused light from the left, transparent layered washes, visible paper grain
+    ```
+
+    ```bash CLI
+    gpt-image -p "A watercolor still life of summer fruit — peaches, figs, and a halved pomegranate on a linen cloth, soft diffused light from the left, transparent layered washes, visible paper grain" \
+      --size 1024x1024 \
+      --quality high \
+      -f watercolor-still-life.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Phrases like "wet-on-wet washes", "transparent layered washes", and "visible paper grain" directly invoke watercolor medium behavior and produce more convincing results than naming the style alone. Including a light source direction ("soft diffused light from the left") helps the model place the wash gradients consistently.
+</Note>

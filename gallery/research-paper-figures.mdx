@@ -1,0 +1,55 @@
+---
+title: "Research paper figure prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for academic figures: system diagrams, model architecture charts, workflow illustrations, and publication-ready visuals."
+---
+
+GPT Image 2 can generate clean, publication-quality research figures — architecture diagrams with consistent color coding, pipeline overviews with labeled stages, and multi-panel comparison layouts with structured grid formatting. The prompts below cover three common figure types found in machine learning and systems papers: a transformer model architecture diagram, a three-stage system pipeline, and a 2×3 ablation comparison panel.
+
+<Note>
+  Use `--quality high` for all publication figures. For figures that will be printed or displayed at large size, add `--size 2048x2048` or `--size 2048x1152` to maximize output resolution.
+</Note>
+
+<AccordionGroup>
+  <Accordion title="Transformer model architecture diagram" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A clean research paper figure showing a transformer model architecture. Left: tokenized input sequence with positional encoding. Center: multi-head self-attention block with attention head visualization. Right: feed-forward layer and output probabilities. White background, labeled arrows, consistent color coding (blue for attention, green for feed-forward), serif axis labels, publication-quality layout, 16:9.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A clean research paper figure showing a transformer model architecture. Left: tokenized input sequence with positional encoding. Center: multi-head self-attention block with attention head visualization. Right: feed-forward layer and output probabilities. White background, labeled arrows, consistent color coding (blue for attention, green for feed-forward), serif axis labels, publication-quality layout, 16:9." \
+      --size 1536x1024 \
+      --quality high \
+      -f transformer-architecture.png
+    ```
+  </Accordion>
+
+  <Accordion title="Three-stage system pipeline diagram" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A research paper system overview diagram with three pipeline stages: Data Collection (database icon, data stream arrows), Processing (CPU icon, transformation steps), and Output (dashboard icon, metrics). Clean rectangular boxes with rounded corners, directional arrows, legend, white background, consistent blue-gray palette, IEEE-style figure caption space at bottom.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A research paper system overview diagram with three pipeline stages: Data Collection (database icon, data stream arrows), Processing (CPU icon, transformation steps), and Output (dashboard icon, metrics). Clean rectangular boxes with rounded corners, directional arrows, legend, white background, consistent blue-gray palette, IEEE-style figure caption space at bottom." \
+      --size 1536x1024 \
+      --quality high \
+      -f system-pipeline-diagram.png
+    ```
+  </Accordion>
+
+  <Accordion title="Multi-panel comparison figure" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A multi-panel comparison figure with 2 rows and 3 columns. Row labels: "Baseline" and "Ours". Column labels: "Input", "Method", "Result". Each panel is a distinct visualization with color-coded differences. Red boxes highlight improvements in the "Ours" row. Clean white background, panel index labels (a-f), caption space at bottom.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A multi-panel comparison figure with 2 rows and 3 columns. Row labels: \"Baseline\" and \"Ours\". Column labels: \"Input\", \"Method\", \"Result\". Each panel is a distinct visualization with color-coded differences. Red boxes highlight improvements in the \"Ours\" row. Clean white background, panel index labels (a-f), caption space at bottom." \
+      --size 1536x1024 \
+      --quality high \
+      -f comparison-figure.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Referencing a publication venue's style ("IEEE-style figure caption space") signals the expected level of formality and annotation density. For comparison figures, explicitly naming the row and column labels in the prompt ensures the grid is correctly structured rather than using generic placeholder headers.
+</Tip>

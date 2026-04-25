@@ -1,0 +1,80 @@
+---
+title: "Edit endpoint showcase for GPT Image 2"
+description: "Real examples of the gpt-image-2 edits endpoint: single-reference restyle, multi-reference combination, and alpha-channel mask inpainting."
+---
+
+The GPT Image 2 edits endpoint (`POST /v1/images/edits`) accepts one or more reference images alongside a text instruction. Adding `-i` to any `gpt-image` command automatically routes through this endpoint. This page shows the three core editing modes with real CLI commands and Python SDK equivalents.
+
+<Note>
+  **Mask rule:** In alpha-channel masks, opaque pixels are preserved and transparent pixels are regenerated. Prepare masks as PNG files with an alpha channel.
+</Note>
+
+<Warning>
+  Real-person-likeness edits typically fail with a 400 moderation error. The CLI prints the full response body to stderr and exits with code `1`.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Single-reference restyle">
+    Pass one `-i` reference image and a text instruction. The model applies the instruction while using the reference as a visual anchor.
+
+    ```bash
+    gpt-image -p "Make it a winter evening with heavy snowfall" \
+      -i chess.png --quality high -f chess-winter.png
+    ```
+
+    ```python
+    from openai import OpenAI
+    client = OpenAI()
+    result = client.images.edit(
+        model="gpt-image-2",
+        image=[open("chess.png", "rb")],
+        prompt="Make it a winter evening with heavy snowfall",
+        quality="high",
+    )
+    ```
+  </Accordion>
+
+  <Accordion title="Multi-reference combination">
+    Pass multiple `-i` flags to combine elements from several source images. The model reads image order — reference which image is "image 1", "image 2", etc. in your prompt.
+
+    ```bash
+    gpt-image -p "Place the dog from image 2 next to the woman in image 1. Match the same lighting, composition, and background. Do not change anything else." \
+      -i woman.png -i dog.png --size portrait --quality medium -f woman-with-dog.png
+    ```
+
+    ```python
+    result = client.images.edit(
+        model="gpt-image-2",
+        image=[open("woman.png", "rb"), open("dog.png", "rb")],
+        prompt="Place the dog from image 2 next to the woman in image 1. Match the same lighting, composition, and background. Do not change anything else.",
+        size="1024x1536",
+        quality="medium",
+    )
+    ```
+  </Accordion>
+
+  <Accordion title="Alpha-channel mask inpainting">
+    Add `-m mask.png` to restrict edits to a specific region. Opaque areas are kept; transparent areas are regenerated according to your prompt.
+
+    ```bash
+    gpt-image -p "replace sky with aurora" \
+      -i photo.jpg -m sky_mask.png -f aurora.png --quality high
+    ```
+
+    ```python
+    result = client.images.edit(
+        model="gpt-image-2",
+        image=[open("photo.jpg", "rb")],
+        mask=open("sky_mask.png", "rb"),
+        prompt="replace sky with aurora",
+        quality="high",
+    )
+    ```
+
+    Prepare masks in any image editor: paint the region to regenerate as transparent (alpha=0), keep everything else opaque (alpha=255), and export as PNG.
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Start multi-reference edits at `--quality medium` for fast iteration, then rerun finalists at `--quality high`. For mask inpainting, use a feathered mask edge for more natural blending.
+</Tip>

@@ -1,0 +1,51 @@
+---
+title: "Infographic and field guide prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for educational infographics, field identification guides, process diagrams, and data-rich visual layouts."
+---
+
+GPT Image 2 handles structured educational visuals well — numbered step diagrams, species identification grids, and tabular comparison charts with consistent iconography and legible labels. The prompts below demonstrate three formats commonly used in editorial, educational, and scientific communication: a linear process infographic, a naturalist field guide page, and a side-by-side method comparison chart. Each prompt specifies the number of items, their content, and layout structure to give the model a clear compositional target.
+
+<AccordionGroup>
+  <Accordion title="Coffee seed-to-cup process diagram" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    An infographic explaining the coffee brewing process from seed to cup in 6 steps. Step icons: 1 Coffee Cherry, 2 Processing & Drying, 3 Green Bean, 4 Roasting, 5 Grinding, 6 Brewing. Each step has a 2-line description. Color progression from green to dark brown across steps. Clean sans-serif labels, white background, 16:9 landscape.
+    ```
+
+    ```bash CLI
+    gpt-image -p "An infographic explaining the coffee brewing process from seed to cup in 6 steps. Step icons: 1 Coffee Cherry, 2 Processing & Drying, 3 Green Bean, 4 Roasting, 5 Grinding, 6 Brewing. Each step has a 2-line description. Color progression from green to dark brown across steps. Clean sans-serif labels, white background, 16:9 landscape." \
+      --size 1536x1024 \
+      --quality high \
+      -f coffee-process-infographic.png
+    ```
+  </Accordion>
+
+  <Accordion title="Urban birds field guide page" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    A naturalist's field guide page for common urban birds of North America. Six illustrated bird species in watercolor: House Sparrow, European Starling, American Robin, Rock Pigeon, Blue Jay, Northern Cardinal. Each with species name, size, distinctive markings, and habitat note. Cream paper texture, botanical illustration style.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A naturalist's field guide page for common urban birds of North America. Six illustrated bird species in watercolor: House Sparrow, European Starling, American Robin, Rock Pigeon, Blue Jay, Northern Cardinal. Each with species name, size, distinctive markings, and habitat note. Cream paper texture, botanical illustration style." \
+      --size 1024x1536 \
+      --quality high \
+      -f urban-birds-field-guide.png
+    ```
+  </Accordion>
+
+  <Accordion title="Coffee brewing method comparison chart" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    An infographic comparing three coffee brewing methods: Pour Over, French Press, and Espresso. For each: brew time, grind size, water temperature, flavor profile, and difficulty rating (1-5 stars). Header row with method icons, clean grid layout, warm coffee-toned color palette.
+    ```
+
+    ```bash CLI
+    gpt-image -p "An infographic comparing three coffee brewing methods: Pour Over, French Press, and Espresso. For each: brew time, grind size, water temperature, flavor profile, and difficulty rating (1-5 stars). Header row with method icons, clean grid layout, warm coffee-toned color palette." \
+      --size 1536x1024 \
+      --quality high \
+      -f brewing-comparison-chart.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Listing every item by name — species, steps, or method columns — prevents the model from inventing substitutes. For process diagrams, specifying a color progression (green to dark brown) gives the model a clear visual logic to follow across the sequence.
+</Tip>

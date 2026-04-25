@@ -1,0 +1,58 @@
+---
+title: "Product and food photography prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for product shots, food styling, packaging mockups, and commercial photography with studio or natural light."
+---
+
+GPT Image 2 produces publication-quality product and food photography from text prompts alone. Describe lighting setup, surface, props, and camera details explicitly — the model responds well to commercial photography vocabulary like "three-point studio lighting", "shallow depth of field", and "editorial food magazine style".
+
+<AccordionGroup>
+  <Accordion title="Commercial product shot — water bottle">
+    **Size:** portrait · **Quality:** high · **Source:** Curated
+
+    ```text
+    A photorealistic commercial product photograph of a matte black cylindrical water bottle on a
+    white seamless backdrop. Studio three-point lighting: key light from upper right, fill from
+    left, rim light outlining the bottle's edge. Condensation droplets on the surface, brand area
+    left intentionally blank. Shot on medium format, retouched finish.
+    ```
+
+    ```bash
+    gpt-image -p "A photorealistic commercial product photograph of a matte black cylindrical water bottle on a white seamless backdrop. Studio three-point lighting: key from upper right, fill from left, rim light on edge. Condensation droplets on surface, brand area blank. Medium format, retouched finish." --size portrait --quality high -f product-bottle.png
+    ```
+  </Accordion>
+
+  <Accordion title="Food styling — tonkotsu ramen flat lay">
+    **Size:** square · **Quality:** high · **Source:** Curated
+
+    ```text
+    A photorealistic food photography shot of a bowl of tonkotsu ramen from directly overhead
+    (flat lay). Rich milky broth, chashu pork slices, soft-boiled egg cut in half with jammy yolk,
+    nori, bamboo shoots, green onion, sesame seeds, chili oil swirl. Ceramic bowl on a dark slate
+    surface, wooden chopsticks resting on a folded cloth napkin, small dish of tare on the side.
+    Natural side window light, shallow depth of field, editorial food magazine style.
+    ```
+
+    ```bash
+    gpt-image -p "A photorealistic food photography flat lay of tonkotsu ramen from overhead. Rich milky broth, chashu pork, soft-boiled egg with jammy yolk, nori, bamboo shoots, green onion, sesame seeds, chili oil swirl. Dark slate surface, wooden chopsticks, cloth napkin. Natural side window light, editorial food magazine style." --size square --quality high -f ramen-flatlay.png
+    ```
+  </Accordion>
+
+  <Accordion title="Skincare packaging mockup">
+    **Size:** portrait · **Quality:** high · **Source:** Curated
+
+    ```text
+    A photorealistic packaging mockup of a skincare serum in a frosted amber glass bottle with a
+    dropper cap. Label: minimal sans-serif, product name "Luminary Serum" in embossed gold,
+    ingredient highlights in fine print. Styled on a white marble surface with dried botanicals
+    and a single fresh petal. Soft natural window light, cosmetics brand photography aesthetic.
+    ```
+
+    ```bash
+    gpt-image -p "A photorealistic packaging mockup of a skincare serum in a frosted amber glass bottle with dropper cap. Label: minimal sans-serif, \"Luminary Serum\" in embossed gold, fine-print ingredients. White marble surface, dried botanicals, fresh petal. Soft natural window light, cosmetics photography." --size portrait --quality high -f skincare-mockup.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  For product photography, leaving the brand area blank ("brand area intentionally blank") gives you a clean canvas for your own branding in post. Describe the lighting rig explicitly — GPT Image 2 understands studio lighting vocabulary.
+</Tip>

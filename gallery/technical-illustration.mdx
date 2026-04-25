@@ -1,0 +1,51 @@
+---
+title: "Technical illustration prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for exploded views, cross-sections, schematic diagrams, blueprint styles, and engineering illustration."
+---
+
+GPT Image 2 produces detailed technical illustrations — exploded assembly diagrams with leader lines and part labels, cutaway cross-sections in blueprint style, and annotated isometric component views. The prompts below cover three standard technical illustration formats: a mechanical watchmovement exploded view, a turbofan engine cross-section, and a stylized motherboard isometric. Each prompt specifies the annotation style, background, and label conventions that define the format.
+
+<AccordionGroup>
+  <Accordion title="Mechanical watch movement exploded view" description="Size: square · Quality: high · Source: Curated">
+    ```
+    A photorealistic exploded-view technical illustration of a mechanical wristwatch movement. All components separated in correct assembly order: mainspring barrel, gear train, escapement wheel, pallet fork, balance wheel, jewel bearings, rotor. White background, fine gray leader lines connecting each part to its label, precise sans-serif annotations, technical drawing aesthetic.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A photorealistic exploded-view technical illustration of a mechanical wristwatch movement. All components separated in correct assembly order: mainspring barrel, gear train, escapement wheel, pallet fork, balance wheel, jewel bearings, rotor. White background, fine gray leader lines connecting each part to its label, precise sans-serif annotations, technical drawing aesthetic." \
+      --size 1024x1024 \
+      --quality high \
+      -f watch-movement-exploded.png
+    ```
+  </Accordion>
+
+  <Accordion title="Turbofan engine cross-section" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A cutaway cross-section illustration of a commercial jet engine (turbofan). Labeled components: fan, low-pressure compressor, high-pressure compressor, combustion chamber, high-pressure turbine, low-pressure turbine, exhaust nozzle. Technical blueprint style with blue background and white linework, dimension annotations, clean engineering diagram.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A cutaway cross-section illustration of a commercial jet engine (turbofan). Labeled components: fan, low-pressure compressor, high-pressure compressor, combustion chamber, high-pressure turbine, low-pressure turbine, exhaust nozzle. Technical blueprint style with blue background and white linework, dimension annotations, clean engineering diagram." \
+      --size 1536x1024 \
+      --quality high \
+      -f turbofan-cross-section.png
+    ```
+  </Accordion>
+
+  <Accordion title="Motherboard isometric diagram" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A stylized isometric illustration of a computer motherboard with key components labeled: CPU socket, RAM slots, PCIe lanes, M.2 slot, power connectors, chipset. Semi-transparent overlay style with glowing data flow paths in teal, dark background, futuristic technical aesthetic.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A stylized isometric illustration of a computer motherboard with key components labeled: CPU socket, RAM slots, PCIe lanes, M.2 slot, power connectors, chipset. Semi-transparent overlay style with glowing data flow paths in teal, dark background, futuristic technical aesthetic." \
+      --size 1536x1024 \
+      --quality high \
+      -f motherboard-isometric.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Listing every labeled component by its correct technical name produces accurate annotations and correct spatial ordering. For exploded views, specifying "correct assembly order" cues the model to separate parts along a logical axis rather than scattering them randomly.
+</Tip>

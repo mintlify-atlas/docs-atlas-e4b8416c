@@ -1,0 +1,135 @@
+---
+title: 'All CLI Parameters and Flags for GPT Image 2'
+description: 'All 14 gpt-image flags with defaults, types, and endpoint applicability — from required --prompt to optional --compression, --background, and --user.'
+---
+
+Every OpenAI GPT Image 2 API parameter is exposed as a first-class flag on the `gpt-image` CLI. This page documents all flags in the order they appear in the argument parser, including which endpoint each flag applies to, its default value, and any constraints or special behaviors.
+
+## Required parameters
+
+<ParamField path="body.-p / --prompt" type="string" required>
+  The text prompt for generation, or the edit instruction for reference-based edits and inpainting. This is the only required flag — every other parameter has a default or is optional.
+
+  ```bash
+  gpt-image -p "a photorealistic convenience store at 10pm"
+  ```
+</ParamField>
+
+## Output control
+
+<ParamField path="body.-f / --file" type="string" default="auto-generated">
+  Output file path. When omitted, the CLI generates a filename in the format `YYYY-MM-DD-HH-MM-SS-<slug>.<ext>` and writes it to `./fig/` if that directory exists, otherwise to `./`. The file extension is derived from `--format`. Applies to both endpoints.
+
+  ```bash
+  gpt-image -p "mountain sunrise" -f sunrise.png
+  ```
+</ParamField>
+
+<ParamField path="body.--format" type="string" default="png">
+  Output encoding for the returned image. Accepts `png`, `jpeg`, or `webp`. Applies to both endpoints. Use `--compression` to tune quality for `jpeg` and `webp` outputs.
+</ParamField>
+
+<ParamField path="body.--compression" type="integer">
+  Compression level from `0` to `100` for `jpeg` and `webp` outputs. Ignored when `--format` is `png`. Applies to both endpoints. Higher values mean smaller file size with more compression artifacts.
+
+  ```bash
+  gpt-image -p "product shot" --format webp --compression 85
+  ```
+</ParamField>
+
+## Image inputs (edit mode)
+
+These flags route the request through `POST /v1/images/edits`. Providing any `-i` flag switches the CLI out of generation mode.
+
+<ParamField path="body.-i / --image" type="string">
+  Path to a reference image. Repeat the flag to supply multiple reference images for multi-reference edits such as outfit transfers or brand composites. Each path must exist on disk — the CLI validates all paths before calling the API and exits 2 if any are missing. Applies to edits endpoint only.
+
+  ```bash
+  # Single reference
+  gpt-image -p "colorize this manga page" -i page.jpg
+
+  # Multiple references
+  gpt-image -p "77 × KFC collab poster" -i cat.png -i kfc_logo.png
+  ```
+</ParamField>
+
+<ParamField path="body.-m / --mask" type="string">
+  Path to an alpha-channel PNG mask for inpainting. Opaque pixels (alpha = 255) are preserved; transparent pixels (alpha = 0) are regenerated according to the prompt. Requires at least one `-i` flag — using `-m` without `-i` exits with code 2. Applies to edits endpoint only.
+
+  ```bash
+  gpt-image -p "replace sky with aurora" -i photo.jpg -m sky_mask.png
+  ```
+</ParamField>
+
+<ParamField path="body.--input-fidelity" type="string">
+  Controls how closely the output tracks the reference image. Accepts `low` or `high`. Supported on `gpt-image-1` and `gpt-image-1.5`. **The CLI silently drops this parameter when the model is `gpt-image-2`** because the API rejects it — a note is printed to stderr. Applies to edits endpoint only.
+</ParamField>
+
+## Model and rendering
+
+<ParamField path="body.--model" type="string" default="gpt-image-2">
+  Model ID to use. The default is `gpt-image-2`. Fallback options include `gpt-image-1.5`, `gpt-image-1`, and `gpt-image-1-mini`. Applies to both endpoints.
+</ParamField>
+
+<ParamField path="body.--size" type="string" default="1024x1024">
+  Output image dimensions. Accepts either a named shortcut or a literal pixel value. Applies to both endpoints.
+
+  **Shortcuts:** `1k`, `2k`, `4k`, `portrait`, `landscape`, `square`, `wide`, `tall` — see [Size and Quality](/cli/size-and-quality) for the full mapping table.
+
+  **Literals:** any dimension where both sides are multiples of 16, neither side exceeds 3840 pixels, the aspect ratio is within 3:1, and total pixel count is between 655,360 and 8,294,400.
+</ParamField>
+
+<ParamField path="body.--quality" type="string" default="high">
+  Rendering fidelity and cost knob. Accepts `auto`, `low`, `medium`, or `high`. Cost scales roughly 10× per step (`low` ≈ $0.005/image, `medium` ≈ $0.04, `high` ≈ $0.17). Applies to both endpoints.
+
+  Use `low` for cheap drafts and broad exploration, `medium` for normal one-off generation, and `high` for final assets, Chinese text, posters, diagrams, and anything shipping-facing.
+</ParamField>
+
+<ParamField path="body.-n / --n" type="integer" default="1">
+  Number of images to generate in a single call. When `n > 1` and you use auto-naming, files are suffixed `_0`, `_1`, … When you supply `-f out.png` and `n > 1`, the outputs become `out_0.png`, `out_1.png`, and so on. Applies to both endpoints.
+
+  ```bash
+  gpt-image -p "isometric chair, minimalist" -n 4 --format webp
+  ```
+</ParamField>
+
+## Generation-only parameters
+
+These flags are forwarded only when the CLI calls `POST /v1/images/generations` (no `-i` flag present).
+
+<ParamField path="body.--background" type="string">
+  Background transparency setting. Accepts `auto` or `opaque`. `opaque` disables the transparent background that `gpt-image-2` can produce. When omitted, the API decides. Applies to generations endpoint only.
+
+  ```bash
+  gpt-image -p "product icon" --background opaque --format webp
+  ```
+</ParamField>
+
+<ParamField path="body.--moderation" type="string" default="low">
+  Content moderation strictness. Accepts `auto` or `low`. The CLI defaults to `low` for broader prompt exploration. Switch to `auto` to use the stricter API-side default. Applies to generations endpoint only.
+</ParamField>
+
+## Tracking
+
+<ParamField path="body.--user" type="string">
+  Optional end-user identifier string forwarded to OpenAI for abuse tracking. Not used in API routing or image generation. Applies to both endpoints.
+</ParamField>
+
+## Parameters by endpoint
+
+| Flag | Applies to |
+|------|-----------|
+| `-p / --prompt` | Both |
+| `-f / --file` | Both |
+| `--model` | Both |
+| `--size` | Both |
+| `--quality` | Both |
+| `-n / --n` | Both |
+| `--format` | Both |
+| `--compression` | Both |
+| `--user` | Both |
+| `-i / --image` | Edits only |
+| `-m / --mask` | Edits only |
+| `--input-fidelity` | Edits only (dropped for `gpt-image-2`) |
+| `--background` | Generations only |
+| `--moderation` | Generations only |

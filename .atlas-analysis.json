@@ -1,23 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "GPT Image 2 Skill",
+  "projectType": "cli-tool",
+  "projectName": "GPT Image 2 Skill",
+  "projectDescription": "A CLI tool, agentic skill, and curated prompt gallery for generating and editing images with OpenAI's GPT Image 2 model.",
   "theme": "luma",
-  "colors": {
-    "primary": "#94cb04",
-    "light": "#545454"
-  },
-  "favicon": "https://media.brand.dev/288cc7c4-5cef-4376-950b-bdf0083eedae.png",
-  "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/wuyoscar/gpt_image_2_skill"
-    }
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/wuyoscar/gpt_image_2_skill"
-    }
-  },
+  "primaryColor": "#94cb04",
+  "lightColor": "#545454",
+  "darkColor": null,
   "navigation": {
     "tabs": [
       {
@@ -108,5 +96,26 @@
         ]
       }
     ]
-  }
+  },
+  "keyFeatures": [
+    "CLI for OpenAI GPT Image 2 text-to-image generation and reference-image editing",
+    "Agentic skill for Claude Code, Codex, and other skill-capable agent runtimes",
+    "162-prompt curated gallery organized into 30+ categories",
+    "Support for multi-reference edits and alpha-channel mask inpainting",
+    "Quality/budget knob (low/medium/high) for cost-conscious generation",
+    "Split Reference Gallery Atlas for context-efficient agent usage",
+    "Full parameter coverage: size, quality, format, compression, background, moderation"
+  ],
+  "publicApiSurface": [
+    "gpt-image -p <prompt>",
+    "gpt-image -p <prompt> -i <image> [-m <mask>]",
+    "gpt-image --size <1k|2k|4k|portrait|landscape|square|wide|tall>",
+    "gpt-image --quality <auto|low|medium|high>",
+    "gpt-image --format <png|jpeg|webp>",
+    "gpt-image -n <count>",
+    "gpt-image --background <auto|opaque>",
+    "gpt-image --moderation <auto|low>",
+    "client.images.generate(model='gpt-image-2', prompt=..., size=..., quality=...)",
+    "client.images.edit(model='gpt-image-2', image=[...], prompt=..., mask=...)"
+  ]
 }

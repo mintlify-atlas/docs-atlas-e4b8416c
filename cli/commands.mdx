@@ -1,0 +1,121 @@
+---
+title: 'CLI Commands and Modes for GPT Image 2'
+description: 'The three gpt-image CLI modes: text-to-image generation, reference-based editing, and mask inpainting. Includes exit codes and auto-naming behavior.'
+---
+
+The `gpt-image` CLI exposes every OpenAI GPT Image 2 API parameter as a command-line flag and routes calls to the correct endpoint based on the flags you provide. There are three operating modes, each mapped to a specific API endpoint. All modes read `OPENAI_API_KEY` from the environment or `~/.env`, write image bytes to disk, and print the output path(s) on stdout.
+
+## Modes at a glance
+
+| Mode | Key flags | Endpoint |
+|------|-----------|----------|
+| Generate | `-p PROMPT` (no `-i`) | `POST /v1/images/generations` |
+| Reference edit | `-p PROMPT -i IMAGE [...]` | `POST /v1/images/edits` |
+| Inpaint with mask | `-p PROMPT -i IMAGE -m MASK` | `POST /v1/images/edits` |
+
+## Mode 1: Text-to-image generation
+
+When you supply only a prompt (no `-i` flag), the CLI calls `POST /v1/images/generations`. Use this mode for creating images entirely from text: illustrations, posters, product renders, concept art, diagrams, and any asset where you are not referencing an existing image.
+
+```bash
+# Basic generation — auto filename, 1024×1024, high quality
+gpt-image -p "a cat astronaut on the moon"
+
+# Named output file, 2048×2048, high quality
+gpt-image -p "Chinese tea poster" -f poster.png --size 2k --quality high
+
+# Four-image batch, opaque background, WebP output
+gpt-image -p "isometric chair, minimalist" -n 4 --background opaque --format webp
+```
+
+<Note>
+  `--background`, `--moderation`, and `-n` are only forwarded to the generations endpoint. See [Parameters](/cli/parameters) for the full list.
+</Note>
+
+## Mode 2: Reference-based editing
+
+Providing one or more `-i` flags switches the CLI to `POST /v1/images/edits` (multipart form upload). The API uses the reference images alongside your prompt to restyle, colorize, composite, or transform the input. You can pass the flag multiple times for multi-reference edits such as outfit transfers or brand collabs.
+
+```bash
+# Single-reference edit — colorize a manga page
+gpt-image -p "colorize this manga page" -i page.jpg -f colored.png
+
+# Multi-reference edit — brand collab poster with two input images
+gpt-image -p "77 × KFC collab poster" -i cat.png -i kfc_logo.png -f collab.png
+```
+
+<Tip>
+  Each `-i` value must be a local file path. The CLI validates that every path exists before calling the API and exits 2 if any are missing.
+</Tip>
+
+## Mode 3: Inpaint with a mask
+
+Adding `-m MASK` alongside `-i` passes an alpha-channel PNG mask to the edits endpoint. Opaque pixels in the mask are preserved exactly; transparent pixels are regenerated according to the prompt. This requires at least one `-i` image — the mask flag is invalid without it.
+
+```bash
+# Replace the sky region, keep the foreground unchanged
+gpt-image -p "replace sky with aurora" -i photo.jpg -m sky_mask.png -f aurora.png
+```
+
+<Warning>
+  The mask must be a PNG file with a real alpha channel. Opaque = keep, transparent = regenerate. Passing a mask without `-i` exits with code 2.
+</Warning>
+
+## Walkthrough: from prompt to file
+
+<Steps>
+  <Step title="Set your API key">
+    Export `OPENAI_API_KEY` in your shell, or add it to `~/.env`. The CLI loads it automatically.
+
+    ```bash
+    export OPENAI_API_KEY="sk-..."
+    ```
+  </Step>
+  <Step title="Choose a mode">
+    Decide whether you are generating from scratch, editing a reference image, or inpainting a masked region. Use the table above to pick the right flags.
+  </Step>
+  <Step title="Run the command">
+    Supply `-p` for the prompt and any additional flags. The CLI prints the output path on stdout when done.
+
+    <CodeGroup>
+
+    ```bash Generate
+    gpt-image -p "Chinese tea poster" -f poster.png --size 2k --quality high
+    ```
+
+    ```bash Edit
+    gpt-image -p "colorize this manga page" -i page.jpg -f colored.png
+    ```
+
+    ```bash Inpaint
+    gpt-image -p "replace sky with aurora" -i photo.jpg -m sky_mask.png -f aurora.png
+    ```
+
+    </CodeGroup>
+  </Step>
+  <Step title="Find the output">
+    If you specified `-f`, the file is at that path. If you omitted `-f`, the CLI auto-generates a name (see [Auto-naming](#auto-naming-behavior)) and prints the full path.
+  </Step>
+</Steps>
+
+## Auto-naming behavior
+
+When `-f` / `--file` is omitted, the CLI creates an output path automatically:
+
+- **Format:** `YYYY-MM-DD-HH-MM-SS-<slug>.<ext>` where `<slug>` is a 30-character sanitized version of the prompt.
+- **Directory:** `./fig/` if that directory exists in the current working directory, otherwise `./`.
+- **Extension:** matches `--format` (defaults to `png`).
+
+With `-n > 1`, multiple files are suffixed: `out.png` becomes `out_0.png`, `out_1.png`, and so on.
+
+## Exit codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | Success — image(s) written to disk, path(s) printed to stdout. |
+| `1` | API error — OpenAI returned a non-2xx response. Full response body echoed to stderr. |
+| `2` | Bad arguments or missing API key — invalid flag combination, missing input file, or `OPENAI_API_KEY` not set. |
+
+<Note>
+  On exit 1, the full OpenAI response body is written to stderr. It usually identifies the problem (rate limit, moderation block, invalid size, or content policy refusal).
+</Note>

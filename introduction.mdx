@@ -1,0 +1,54 @@
+---
+title: 'GPT Image 2 Skill: CLI, agent skill, and prompt gallery'
+description: 'A prompt library, agentic skill, and CLI for OpenAI gpt-image-2 — covering text-to-image generation, reference-image editing, and 162 curated prompts.'
+keywords: ['gpt-image-2', 'openai', 'image generation', 'image editing', 'prompt gallery', 'cli', 'agent skill']
+---
+
+GPT Image 2 Skill is an open-source toolkit that wraps OpenAI's `gpt-image-2` model across three surfaces: a command-line interface for direct image generation and editing, an agentic skill that plugs into agent runtimes such as Claude Code, Codex, OpenClaw, and Hermes Agent, and a curated prompt gallery of 162 ready-to-run image prompts spanning 28 categories. This documentation covers all three surfaces and everything you need to start generating images in minutes.
+
+## What is included
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Run your first image generation command and see output in under two minutes.
+  </Card>
+  <Card title="CLI commands" icon="terminal" href="/cli/commands">
+    Full reference for every flag — prompt, size, quality, reference images, masks, batch output, and more.
+  </Card>
+  <Card title="Agentic skill" icon="robot" href="/skill/overview">
+    Install the skill into Claude Code, Codex, or any compatible agent runtime and call it in natural language.
+  </Card>
+  <Card title="Prompt gallery" icon="images" href="/gallery/index">
+    162 curated prompts organized by category — anime, gaming, typography, UI mockups, research figures, and more.
+  </Card>
+</CardGroup>
+
+## The three surfaces
+
+**CLI** — The `gpt-image` command is a thin wrapper around the two official OpenAI image endpoints. Every SDK parameter is exposed as a flag. Pass `-p` for the prompt, `-i` to attach one or more reference images (which routes the call through the edits endpoint), and `-m` to supply an alpha-channel mask for inpainting. Output is written to disk and the file path is printed to stdout.
+
+**Agentic skill** — The `skills/gpt-image/` folder contains a `SKILL.md` manifest that skill-capable agent runtimes load automatically. Once installed, you can request images in natural language — for example, *"generate the Boston Spring poster from the skill gallery"* — and the agent assembles the correct CLI or SDK call on your behalf. The skill also bundles four local reference surfaces (a gallery index, per-category gallery files, a prompt-craft checklist, and the full OpenAI cookbook) that the agent loads on demand to inform prompt quality without overflowing context.
+
+**Prompt gallery** — 162 curated prompts with matching generated image assets, organized into 28 categories. Every entry ships the exact prompt text alongside the `size` and `quality` settings used to produce the reference image. The gallery doubles as a prompt library, a scale reference for style transfer, and a testbed for the edits endpoint.
+
+## Prerequisites
+
+- **Python ≥ 3.11** — required by the CLI and skill scripts
+- **OpenAI API key** — set `OPENAI_API_KEY` in your environment or in `~/.env`
+- **uv or uvx** — recommended for zero-install usage; `pip` also works for manual installs
+
+## Key features
+
+- **Two official endpoints** — `POST /v1/images/generations` for text-to-image and `POST /v1/images/edits` for reference-based edits; endpoint selection is automatic based on whether `-i` is present
+- **Multi-reference editing** — pass `-i` more than once to combine multiple source images in a single edits call
+- **Alpha-channel inpainting** — supply a PNG mask with `-m`; opaque pixels are preserved, transparent pixels are regenerated
+- **Size shortcuts** — use `portrait`, `landscape`, `square`, `wide`, `tall`, `1k`, `2k`, or `4k` instead of raw pixel dimensions
+- **Quality as a budget knob** — `low` for cheap drafts, `medium` for exploration, `high` for final assets and dense typography
+- **Batch generation** — `-n` returns multiple images in one call, auto-suffixed `_0`, `_1`, …
+- **Output format control** — `png` (default), `jpeg`, or `webp` with optional compression level
+- **162-prompt gallery** — organized into 28 categories with generated reference images and exact size/quality metadata
+- **Agent-first skill manifest** — drop the `skills/gpt-image/` folder into any compatible runtime to enable natural-language image generation
+
+<Note>
+  The CLI reads `OPENAI_API_KEY` from the process environment first, then `./.env`, then `~/.env`. You do not need to export the key each session if you add it to `~/.env`.
+</Note>

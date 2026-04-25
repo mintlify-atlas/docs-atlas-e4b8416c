@@ -1,0 +1,51 @@
+---
+title: "UI/UX mockup prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for generating app screens, dashboard designs, mobile UI, and web interface mockups with realistic HUD elements."
+---
+
+GPT Image 2 produces convincing UI mockups — rendered component hierarchies, legible type, realistic iconography, and coherent layout grids. The prompts below cover three common design deliverables: a mobile fitness app screen, a dark-mode analytics dashboard, and a component library reference sheet. Each prompt specifies the design system, color values, and layout intent so the model has enough context to render a believable interface rather than a decorative approximation.
+
+<AccordionGroup>
+  <Accordion title="Mobile fitness app home screen" description="Size: portrait · Quality: high · Source: Curated">
+    ```
+    Design a mobile fitness app home screen mockup in light mode. Top card shows today's step count (8,432 steps, 64% of goal) with a circular progress ring. Below: three activity cards for Running, Cycling, Yoga with duration and calorie counts. Bottom tab bar with icons for Home, Workouts, Stats, Profile. Clean sans-serif typography, rounded corners, soft drop shadows, iOS-style design system, 9:16 portrait.
+    ```
+
+    ```bash CLI
+    gpt-image -p "Design a mobile fitness app home screen mockup in light mode. Top card shows today's step count (8,432 steps, 64% of goal) with a circular progress ring. Below: three activity cards for Running, Cycling, Yoga with duration and calorie counts. Bottom tab bar with icons for Home, Workouts, Stats, Profile. Clean sans-serif typography, rounded corners, soft drop shadows, iOS-style design system, 9:16 portrait." \
+      --size 1024x1536 \
+      --quality high \
+      -f fitness-app-mockup.png
+    ```
+  </Accordion>
+
+  <Accordion title="Dark-mode analytics dashboard" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A data analytics web dashboard mockup in dark mode. Header with navigation links and user avatar. Main area: KPI cards showing Revenue $2.4M (↑12%), Active Users 84k (↑8%), Churn Rate 2.1% (↓0.3%), NPS 67. Line chart for 30-day revenue trend, donut chart for traffic sources, bar chart for weekly signups. Left sidebar with collapsible menu. Clean grid layout, Inter font, #0f1117 background, blue accent.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A data analytics web dashboard mockup in dark mode. Header with navigation links and user avatar. Main area: KPI cards showing Revenue $2.4M (↑12%), Active Users 84k (↑8%), Churn Rate 2.1% (↓0.3%), NPS 67. Line chart for 30-day revenue trend, donut chart for traffic sources, bar chart for weekly signups. Left sidebar with collapsible menu. Clean grid layout, Inter font, #0f1117 background, blue accent." \
+      --size 1536x1024 \
+      --quality high \
+      -f analytics-dashboard-mockup.png
+    ```
+  </Accordion>
+
+  <Accordion title="UI component library sheet" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A UI component library sheet in light mode showing button states (default, hover, active, disabled), input field variants, toggle switches, checkboxes, radio buttons, dropdown menus, avatar sizes, badge variants, and modal skeleton. Clean design tokens visible as labels. Figma-style presentation with component names.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A UI component library sheet in light mode showing button states (default, hover, active, disabled), input field variants, toggle switches, checkboxes, radio buttons, dropdown menus, avatar sizes, badge variants, and modal skeleton. Clean design tokens visible as labels. Figma-style presentation with component names." \
+      --size 1536x1024 \
+      --quality high \
+      -f component-library-sheet.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Specifying explicit data values — step counts, revenue figures, percentage changes — gives the model concrete text to render rather than placeholder content. Named design systems ("iOS-style", "Inter font", specific hex codes) anchor the visual language and produce more coherent results than vague style references.
+</Tip>

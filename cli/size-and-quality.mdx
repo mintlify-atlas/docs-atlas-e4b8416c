@@ -1,0 +1,109 @@
+---
+title: 'Size Shortcuts, Literal Sizes, and Quality Guide'
+description: 'Reference for all gpt-image size shortcuts and literal constraints, plus a quality-to-budget guide and intent-based size picking table for every use case.'
+---
+
+The `--size` and `--quality` flags together determine image dimensions, cost, and rendering fidelity. `--size` accepts both human-readable shortcuts and raw pixel dimensions; `--quality` is the primary budget dial — there is no separate budget flag. Understanding both flags lets you balance cost, turnaround time, and output quality for every use case.
+
+## Size shortcuts
+
+The CLI maps eight shortcut keywords to specific pixel dimensions. Shortcuts are case-insensitive and resolved before the value is sent to the API.
+
+| Shortcut | Resolves to | Aspect ratio |
+|----------|-------------|--------------|
+| `1k` | `1024×1024` | 1:1 square |
+| `square` | `1024×1024` | 1:1 square |
+| `portrait` | `1024×1536` | 2:3 portrait |
+| `landscape` | `1536×1024` | 3:2 landscape |
+| `wide` | `2048×1152` | 16:9 widescreen |
+| `2k` | `2048×2048` | 1:1 square |
+| `4k` | `3840×2160` | 16:9 widescreen |
+| `tall` | `2160×3840` | 9:16 vertical |
+
+```bash
+# Using a shortcut
+gpt-image -p "portrait poster" --size portrait
+
+# Equivalent literal
+gpt-image -p "portrait poster" --size 1024x1536
+```
+
+## Literal size constraints
+
+When passing a literal dimension string such as `1536x1024`, all four constraints below must hold. The API returns an error if any are violated.
+
+- **16-pixel multiple:** both width and height must be divisible by 16.
+- **Maximum edge:** neither side may exceed 3840 pixels.
+- **Aspect ratio cap:** the ratio of the longer side to the shorter side must be at most 3:1.
+- **Total pixel range:** the product of width × height must be between 655,360 and 8,294,400 pixels (roughly 0.66 MP to 8.3 MP).
+
+<Note>
+  When in doubt, use a shortcut. Shortcuts always satisfy every constraint. Only reach for literals when you need a specific crop ratio not covered by a shortcut.
+</Note>
+
+## Quality and budget guide
+
+`--quality` is the only budget control in the CLI. Cost scales roughly 10× between each step.
+
+| Quality | Approximate cost | When to use |
+|---------|-----------------|-------------|
+| `low` | ~$0.005 / image | Cheap drafts, broad prompt exploration, collecting many variants, rough composition checks, cases where the user explicitly asks for low cost or fast iteration. |
+| `medium` | ~$0.04 / image | Normal one-off exploration, style probing, outputs where readability matters but the result is not yet final. |
+| `high` | ~$0.17 / image | Final posters, Chinese text and dense typography, infographics, paper figures, UI diagrams, multi-panel layouts, banners, and any asset likely to be shipped or published. |
+| `auto` | API decides | Let the API choose; not recommended when budget matters. |
+
+<Warning>
+  In-image text, dense diagrams, small labels, and multi-panel layouts degrade visibly at `medium`. Use `high` for any output where legibility of text or fine detail is required.
+</Warning>
+
+<Tip>
+  When generating many candidates, start at `low` to collect variants cheaply, then rerun only the finalists at `high` for delivery-quality output.
+</Tip>
+
+## Size picking guide by intent
+
+Choose your size based on the intended output format or delivery context. The table below maps common use cases to the recommended shortcut.
+
+| Intent | Recommended size | Shortcut |
+|--------|-----------------|----------|
+| Default, social square, avatar | `1024×1024` | `1k` / `square` |
+| Mobile screenshot, portrait poster, beauty/skincare product | `1024×1536` | `portrait` |
+| Landscape photo, gameplay screenshot, 3:2 editorial | `1536×1024` | `landscape` |
+| 16:9 widescreen banner, dashboard hero | `2048×1152` | `wide` |
+| Hi-res print, paper figure, 1:1 at 2× density | `2048×2048` | `2k` |
+| Widescreen cinematic render, 4K hero image | `3840×2160` | `4k` |
+| Tall story banner, vertical video thumbnail, 9:16 social | `2160×3840` | `tall` |
+
+```bash
+# Hi-res print figure for a research paper
+gpt-image -p "pipeline architecture diagram" --size 2k --quality high -f fig1.png
+
+# Tall vertical video thumbnail
+gpt-image -p "product launch story banner" --size tall --quality high -f story.png
+
+# Cheap draft grid to explore compositions
+gpt-image -p "isometric city block" -n 4 --size 1k --quality low
+```
+
+## Combining size and quality
+
+Size and quality are independent — larger does not automatically mean higher quality rendering, and `high` quality at `1k` is more expensive per pixel than `low` quality at `4k`.
+
+<CodeGroup>
+
+```bash Draft exploration
+# Quick, cheap — many 1K squares at low quality
+gpt-image -p "product packaging concept" -n 4 --size 1k --quality low
+```
+
+```bash Final delivery
+# Single high-quality 2K output for a paper figure
+gpt-image -p "model architecture flowchart" --size 2k --quality high -f figure1.png
+```
+
+```bash Widescreen render
+# 4K cinematic at high quality for a hero image
+gpt-image -p "cinematic Shanghai skyline at dusk" --size 4k --quality high -f skyline.png
+```
+
+</CodeGroup>

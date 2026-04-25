@@ -1,0 +1,205 @@
+---
+title: 'Install GPT Image 2 Skill CLI and agent skill'
+description: 'Install gpt-image via uvx (zero-install), uv tool install (global), or git clone — then set up your OpenAI API key and agent skill in minutes.'
+keywords: ['gpt-image-2', 'install', 'uvx', 'uv tool install', 'cli setup', 'openai api key', 'agent skill install']
+---
+
+GPT Image 2 Skill ships a command-line tool (`gpt-image`) and an agent skill folder (`skills/gpt-image/`) from the same repository. You can run the CLI immediately with `uvx` without installing anything, install it globally for repeated use, or clone the repository to get both the CLI and the agent skill at once. All methods require Python ≥ 3.11 and an OpenAI API key.
+
+## Install the CLI
+
+<Tabs>
+
+<Tab title="uvx (no install)">
+
+Run the CLI directly from the GitHub repository without adding anything to your PATH. `uvx` downloads, caches, and executes the package in one step.
+
+```bash
+uvx --from git+https://github.com/wuyoscar/gpt_image_2_skill gpt-image -p "a cat astronaut"
+```
+
+This is the fastest way to try the CLI. Use it for one-off commands or in CI pipelines where you want a pinned version without a persistent installation.
+
+<Note>
+  `uvx` requires [uv](https://docs.astral.sh/uv/) to be installed. Run `curl -LsSf https://astral.sh/uv/install.sh | sh` to install uv if you don't have it.
+</Note>
+
+</Tab>
+
+<Tab title="uv tool install (global)">
+
+Install `gpt-image` to your PATH so you can call it without the `uvx --from ...` prefix.
+
+```bash
+uv tool install git+https://github.com/wuyoscar/gpt_image_2_skill
+```
+
+After installation, use the short form:
+
+```bash
+gpt-image -p "a cat astronaut"
+```
+
+</Tab>
+
+<Tab title="Manual git clone">
+
+Clone the repository to get the CLI source, the agent skill folder, and the full prompt gallery in one place.
+
+```bash
+git clone https://github.com/wuyoscar/gpt_image_2_skill.git
+cd gpt_image_2_skill
+```
+
+Then run the CLI directly with `uv`:
+
+```bash
+uv run src/gpt_image_cli/cli.py -p "a cat astronaut"
+```
+
+Or install it into your current environment with pip:
+
+```bash
+pip install -e .
+gpt-image -p "a cat astronaut"
+```
+
+</Tab>
+
+</Tabs>
+
+## Set up your API key
+
+The CLI reads `OPENAI_API_KEY` from the process environment, then from `./.env` in the working directory, then from `~/.env` in your home directory. The `~/.env` file is the recommended location because it applies to all projects without needing to export the key each session.
+
+<Steps>
+
+<Step title="Add the key to ~/.env">
+
+```bash
+echo 'OPENAI_API_KEY=sk-...' >> ~/.env
+```
+
+Replace `sk-...` with your actual key from the [OpenAI API keys page](https://platform.openai.com/api-keys).
+
+</Step>
+
+<Step title="Verify the key is loaded">
+
+```bash
+gpt-image -p "test" --quality low
+```
+
+If the key is missing, the CLI exits with code `2` and prints:
+
+```text
+error: OPENAI_API_KEY not set. Add it to ~/.env or `export OPENAI_API_KEY=...`.
+```
+
+</Step>
+
+</Steps>
+
+<Warning>
+  Do not commit `.env` files to version control. Add `.env` to your `.gitignore` if you use a local `.env` file in a project directory.
+</Warning>
+
+## Install the agent skill
+
+The `skills/gpt-image/` folder contains the `SKILL.md` manifest and bundled reference files used by agent runtimes. Install it once per runtime and the agent can generate images from natural-language requests without you writing CLI commands manually.
+
+<Tabs>
+
+<Tab title="Claude Code">
+
+```text
+/plugin marketplace add wuyoscar/gpt_image_2_skill
+/plugin install gpt-image@wuyoscar-skills
+```
+
+Run both commands inside Claude Code. The plugin manager downloads the skill folder and registers it automatically.
+
+</Tab>
+
+<Tab title="Codex">
+
+Use the built-in `$skill-installer` helper:
+
+```text
+$skill-installer install https://github.com/wuyoscar/gpt_image_2_skill/tree/main/skills/gpt-image
+```
+
+Codex downloads the folder and places it under `~/.codex/skills/gpt-image`. Restart Codex after installation so the `$gpt-image` skill is loaded.
+
+For a manual install, copy the folder directly:
+
+```bash
+git clone https://github.com/wuyoscar/gpt_image_2_skill.git
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R gpt_image_2_skill/skills/gpt-image "${CODEX_HOME:-$HOME/.codex}/skills/"
+```
+
+</Tab>
+
+<Tab title="Other runtimes">
+
+Set `AGENT_SKILLS_DIR` to the skills directory your runtime uses, then symlink the skill folder into it:
+
+```bash
+git clone https://github.com/wuyoscar/gpt_image_2_skill.git
+cd gpt_image_2_skill
+
+export AGENT_SKILLS_DIR="/path/to/your/agent/skills"
+mkdir -p "$AGENT_SKILLS_DIR"
+ln -s "$PWD/skills/gpt-image" "$AGENT_SKILLS_DIR/gpt-image"
+```
+
+Check your runtime's documentation for the correct value of `AGENT_SKILLS_DIR`.
+
+</Tab>
+
+</Tabs>
+
+## Update
+
+<Tabs>
+
+<Tab title="CLI (uv tool)">
+
+```bash
+uv tool upgrade gpt-image-cli
+```
+
+</Tab>
+
+<Tab title="Manual git clone">
+
+```bash
+cd gpt_image_2_skill && git pull
+```
+
+</Tab>
+
+<Tab title="Claude Code plugin">
+
+Use Claude Code's built-in plugin update flow. Check the plugin manager for the `wuyoscar/gpt_image_2_skill` entry and run the update command shown there.
+
+</Tab>
+
+<Tab title="Codex skill">
+
+Rerun the `$skill-installer` command with the same URL to pull the latest version:
+
+```text
+$skill-installer install https://github.com/wuyoscar/gpt_image_2_skill/tree/main/skills/gpt-image
+```
+
+</Tab>
+
+</Tabs>
+
+## Next steps
+
+- Follow the [quickstart](/quickstart) to generate your first image.
+- Read the [CLI commands reference](/cli/commands) for all flags and size shortcuts.
+- Browse the [prompt gallery](/gallery/index) to see 162 example prompts with generated images.

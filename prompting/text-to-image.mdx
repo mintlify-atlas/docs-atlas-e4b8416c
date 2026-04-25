@@ -1,0 +1,84 @@
+---
+title: "Text-to-image generation with GPT Image 2"
+description: "Generate images from text prompts using gpt-image-2. Learn prompt formats, size and quality settings, and how to run the same prompt via CLI or Python SDK."
+---
+
+Text-to-image mode is the default generation path in GPT Image 2. Provide a prompt with no reference image and the model synthesises an entirely new image from the text description alone. Under the hood this calls the `POST /v1/images/generations` endpoint. You can control output dimensions with `--size` and detail fidelity with `--quality`.
+
+## Running a generation
+
+Omit the `-i` flag to enter text-to-image mode. The example below generates a single portrait-orientation image at high quality:
+
+<CodeGroup>
+
+```bash CLI
+gpt-image -p "a photorealistic convenience store at 10pm, neon signs reflecting on wet pavement" \
+  --size portrait --quality high -f out.png
+```
+
+```python Python SDK
+import base64
+from openai import OpenAI
+
+client = OpenAI()
+
+result = client.images.generate(
+    model="gpt-image-2",
+    prompt="a photorealistic convenience store at 10pm, neon signs reflecting on wet pavement",
+    size="1024x1536",
+    quality="high",
+)
+
+# Save the first result
+image_bytes = base64.b64decode(result.data[0].b64_json)
+with open("out.png", "wb") as f:
+    f.write(image_bytes)
+```
+
+</CodeGroup>
+
+## Prompt format styles
+
+GPT Image 2 accepts any consistent format. Choose the style that fits your workflow and stick to it across a project.
+
+| Style | When to use | Example |
+| --- | --- | --- |
+| **Minimal** | Quick iteration, concept sketching | `neon convenience store, night, wet pavement` |
+| **Descriptive** | Final production output, narrative scenes | `A photorealistic convenience store at 10pm, neon signs casting pink and blue reflections on rain-soaked pavement, empty street, cinematic` |
+| **JSON-style** | Programmatic generation, templated prompts | `{"scene": "convenience store", "time": "10pm", "lighting": "neon", "style": "photorealistic"}` |
+| **Instruction-style** | Explicit control, less ambiguity | `Generate a photorealistic image of a convenience store at night with neon signs and wet pavement reflections` |
+
+<Tip>
+  Consistency within a project matters more than which format you pick. Mixing styles across a batch makes variance harder to diagnose.
+</Tip>
+
+## Practical examples
+
+### Simple product shot
+
+```bash
+gpt-image -p "a photorealistic white ceramic coffee mug on a matte grey studio surface, even studio lighting, sharp product shot" \
+  --size square --quality high -f mug.png
+```
+
+### Portrait poster with Chinese text
+
+Use `--quality high` and wrap required copy in straight quotes when rendering non-Latin characters.
+
+```bash
+gpt-image -p 'Design a 3:4 portrait tea poster. Exact copy: "山川茶事" as the headline, "冷泡系列" as the subtitle, "中杯 16 元" as the price. Soft green watercolour background, minimal layout.' \
+  --size portrait --quality high -f tea-poster.png
+```
+
+### Batch generation
+
+Use `-n` to generate multiple variations of the same prompt in one call. Useful for picking the best result without re-running the command.
+
+```bash
+gpt-image -p "a photorealistic convenience store at 10pm, neon signs reflecting on wet pavement" \
+  --size portrait --quality high -n 4 -f store.png
+```
+
+<Note>
+  Batch output files are numbered automatically: `store_0.png`, `store_1.png`, and so on — zero-indexed to match the API response order.
+</Note>

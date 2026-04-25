@@ -1,0 +1,51 @@
+---
+title: "Illustration prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for illustration styles including pixel art, isometric scenes, watercolor, ink, and more illustration techniques."
+---
+
+GPT Image 2 handles a wide range of illustration styles, from tight pixel art and clean isometric vectors to loose editorial flat design. The model responds well to explicit style references (retro game aesthetic, vector style, editorial illustration) combined with specific scene content. The prompts below demonstrate three of the most commonly requested illustration techniques — each can be adapted by swapping the scene description while keeping the style direction intact.
+
+<AccordionGroup>
+  <Accordion title="Pixel art scene" description="Size: square · Quality: high · Source: Curated">
+    ```
+    Create a 16-bit pixel art scene of a rainy Tokyo street at night, neon signs reflected on wet pavement, a lone figure with an umbrella, vending machines glowing, detailed pixel shading, retro game aesthetic
+    ```
+
+    ```bash CLI
+    gpt-image -p "Create a 16-bit pixel art scene of a rainy Tokyo street at night, neon signs reflected on wet pavement, a lone figure with an umbrella, vending machines glowing, detailed pixel shading, retro game aesthetic" \
+      --size 1024x1024 \
+      --quality high \
+      -f pixel-art-tokyo.png
+    ```
+  </Accordion>
+
+  <Accordion title="Isometric illustration" description="Size: square · Quality: high · Source: Curated">
+    ```
+    An isometric illustration of a cozy bookshop interior, warm afternoon light through tall windows, wooden shelves packed with colorful books, a cat sleeping on the counter, potted plants, steaming coffee, clean vector style, soft shadow
+    ```
+
+    ```bash CLI
+    gpt-image -p "An isometric illustration of a cozy bookshop interior, warm afternoon light through tall windows, wooden shelves packed with colorful books, a cat sleeping on the counter, potted plants, steaming coffee, clean vector style, soft shadow" \
+      --size 1024x1024 \
+      --quality high \
+      -f isometric-bookshop.png
+    ```
+  </Accordion>
+
+  <Accordion title="Flat design illustration" description="Size: landscape · Quality: medium · Source: Curated">
+    ```
+    A flat design illustration of a city park in autumn, golden leaves falling, joggers, dog walkers, food cart, minimalist shapes, bold color palette, editorial illustration style
+    ```
+
+    ```bash CLI
+    gpt-image -p "A flat design illustration of a city park in autumn, golden leaves falling, joggers, dog walkers, food cart, minimalist shapes, bold color palette, editorial illustration style" \
+      --size 1536x1024 \
+      --quality medium \
+      -f flat-design-park.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Pixel art prompts benefit from explicit resolution references like "16-bit" or "32-bit". Isometric prompts should specify "clean vector style" or "clean lines" to avoid rasterized textures. Flat design prompts respond well to "minimalist shapes" and a named palette.
+</Note>

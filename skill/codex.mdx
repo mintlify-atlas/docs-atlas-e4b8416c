@@ -1,0 +1,135 @@
+---
+title: 'Install gpt-image as a Codex skill'
+description: 'Add the gpt-image skill to Codex using the built-in $skill-installer or by copying the folder manually, then invoke it as $gpt-image in your sessions.'
+---
+
+Codex has a native skills system with built-in helpers like `$skill-installer` and `$skill-creator`. You can install the `gpt-image` skill in two ways: via the built-in installer (recommended), or by copying the skill folder manually. After installation, the skill is available as `$gpt-image` in any Codex session.
+
+## Prerequisites
+
+- Codex installed and running.
+- `OPENAI_API_KEY` set in your environment or in `~/.env`.
+
+## Method 1: Built-in installer (recommended)
+
+<Steps>
+  <Step title="Open Codex and run the installer">
+    In a Codex session, ask the built-in installer to download the skill directly from GitHub:
+
+    ```text
+    $skill-installer install https://github.com/wuyoscar/gpt_image_2_skill/tree/main/skills/gpt-image
+    ```
+
+    Codex downloads the `skills/gpt-image` folder and places it under your Codex skills directory:
+
+    ```bash
+    ~/.codex/skills/gpt-image
+    ```
+  </Step>
+
+  <Step title="Restart Codex">
+    Restart Codex so the new `$gpt-image` skill is picked up:
+
+    ```bash
+    # Quit Codex, then relaunch it
+    codex
+    ```
+  </Step>
+
+  <Step title="Verify the skill is loaded">
+    In a new Codex session, confirm the skill is available:
+
+    ```text
+    $gpt-image --help
+    ```
+
+    You should see the full flag reference from the skill manifest.
+  </Step>
+</Steps>
+
+## Method 2: Manual installation
+
+Use this method if you prefer a local clone, need offline access, or want to contribute to the skill.
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/wuyoscar/gpt_image_2_skill.git
+    cd gpt_image_2_skill
+    ```
+  </Step>
+
+  <Step title="Copy the skill folder into Codex's skills directory">
+    ```bash
+    mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+    cp -R skills/gpt-image "${CODEX_HOME:-$HOME/.codex}/skills/"
+    ```
+
+    If you have set `CODEX_HOME` to a custom path, the command above respects it automatically. Otherwise it defaults to `~/.codex/skills/gpt-image`.
+  </Step>
+
+  <Step title="Restart Codex">
+    Restart Codex to load the newly copied skill:
+
+    ```bash
+    codex
+    ```
+  </Step>
+</Steps>
+
+## Comparison
+
+<Tabs>
+  <Tab title="Built-in installer">
+    **Pros:**
+    - One command, no Git required.
+    - Codex manages the download and placement automatically.
+
+    **Cons:**
+    - To update, re-run the installer command.
+    - Less control over the local copy.
+  </Tab>
+  <Tab title="Manual installation">
+    **Pros:**
+    - Full local clone — edit prompts, add gallery entries, or contribute upstream.
+    - Update by running `git pull` in the cloned directory.
+
+    **Cons:**
+    - Requires Git and a manual copy step.
+  </Tab>
+</Tabs>
+
+## Using the skill in Codex
+
+Once the skill is loaded, invoke it in your Codex session:
+
+- "Use `$gpt-image` to generate a Boston Spring poster, portrait, high quality."
+- "With `$gpt-image`, restyle this photo as ink-wash painting." *(attach reference)*
+- "Ask `$gpt-image` to generate 4 variants of this logo at low quality for drafts."
+
+Codex reads `SKILL.md` on load and uses the gallery index (`references/gallery.md`) to find matching prompt patterns before calling the generation script.
+
+## Updating
+
+<Tabs>
+  <Tab title="Built-in installer">
+    Re-run the installer command to fetch the latest version:
+
+    ```text
+    $skill-installer install https://github.com/wuyoscar/gpt_image_2_skill/tree/main/skills/gpt-image
+    ```
+  </Tab>
+  <Tab title="Manual (git pull)">
+    Pull the latest changes in your cloned repository:
+
+    ```bash
+    cd gpt_image_2_skill && git pull
+    ```
+
+    The updated files in `skills/gpt-image/` are picked up the next time you restart Codex.
+  </Tab>
+</Tabs>
+
+<Tip>
+  Start with `--quality low` to explore many variants cheaply, then rerun finalists at `--quality high` for shipping-ready output.
+</Tip>

@@ -1,0 +1,51 @@
+---
+title: "Gaming and game HUD prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for game screenshots, HUD designs, dark fantasy RPG scenes, open-world gameplay stills, and MOBA arena mockups."
+---
+
+GPT Image 2 renders convincing game screenshots — believable HUD elements, legible minimap overlays, readable ability buttons, and coherent in-world environments. The prompts below cover three distinct game genres: a dark-fantasy action RPG, a mobile MOBA, and a pixel-art isometric RPG. Each prompt specifies camera framing, HUD component inventory, and art direction so the model produces a plausible gameplay capture rather than a loose concept illustration.
+
+<AccordionGroup>
+  <Accordion title="Dark fantasy action RPG screenshot" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    Create an original AAA dark-fantasy action RPG screenshot. A silver-haired monster hunter in layered leather armor stands in a ruined marsh at blue hour, sword drawn toward a huge winged swamp beast rising from mist. Cinematic over-the-shoulder framing, believable HUD with health, stamina, potion icons, quest text, and minimap. Wet stones, dead trees, torchlight, moonlit fog, subtle alchemy glyphs, highly detailed materials, dramatic but readable composition, premium next-gen game look, 16:9 landscape.
+    ```
+
+    ```bash CLI
+    gpt-image -p "Create an original AAA dark-fantasy action RPG screenshot. A silver-haired monster hunter in layered leather armor stands in a ruined marsh at blue hour, sword drawn toward a huge winged swamp beast rising from mist. Cinematic over-the-shoulder framing, believable HUD with health, stamina, potion icons, quest text, and minimap. Wet stones, dead trees, torchlight, moonlit fog, subtle alchemy glyphs, highly detailed materials, dramatic but readable composition, premium next-gen game look, 16:9 landscape." \
+      --size 1536x1024 \
+      --quality high \
+      -f dark-fantasy-rpg.png
+    ```
+  </Accordion>
+
+  <Accordion title="Mobile MOBA gameplay screenshot" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    Create an original landscape mobile MOBA / action-RPG gameplay screenshot, inspired by competitive lane-battle games but not copying any existing franchise. 16:9 landscape, polished mobile game HUD. Scene: a bright fantasy arena at golden-hour dusk, three stylized heroes clash near a central river bridge and glowing crystal objective. Camera: slightly elevated isometric third-person gameplay view, readable battlefield lanes, minions, spell effects, terrain brush, turret silhouettes, and a boss-objective pit in the distance. HUD design: bottom-left translucent virtual joystick, bottom-right four circular ability buttons with cooldown numbers, ultimate button glowing but 87% charged, top-center score bar reading "12 - 11", match timer "08:42", team health bars, mini-map in the top-left, item quick slots, gold counter "3,420", clean mobile-safe margins, crisp icons, no real game logos. Art direction: premium anime-fantasy 3D mobile game, saturated teal / gold / violet palette, sharp readable UI, dynamic spell VFX, high-detail materials, readable text, screen-capture feel, not a poster, not a mockup board.
+    ```
+
+    ```bash CLI
+    gpt-image -p "Create an original landscape mobile MOBA / action-RPG gameplay screenshot, inspired by competitive lane-battle games but not copying any existing franchise. 16:9 landscape, polished mobile game HUD. Scene: a bright fantasy arena at golden-hour dusk, three stylized heroes clash near a central river bridge and glowing crystal objective. Camera: slightly elevated isometric third-person gameplay view, readable battlefield lanes, minions, spell effects, terrain brush, turret silhouettes, and a boss-objective pit in the distance. HUD design: bottom-left translucent virtual joystick, bottom-right four circular ability buttons with cooldown numbers, ultimate button glowing but 87% charged, top-center score bar reading \"12 - 11\", match timer \"08:42\", team health bars, mini-map in the top-left, item quick slots, gold counter \"3,420\", clean mobile-safe margins, crisp icons, no real game logos. Art direction: premium anime-fantasy 3D mobile game, saturated teal / gold / violet palette, sharp readable UI, dynamic spell VFX, high-detail materials, readable text, screen-capture feel, not a poster, not a mockup board." \
+      --size 1536x1024 \
+      --quality high \
+      -f mobile-moba-screenshot.png
+    ```
+  </Accordion>
+
+  <Accordion title="Pixel art isometric RPG screenshot" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    Create an isometric pixel-art RPG screenshot of a traditional Japanese village during cherry blossom season. Sakura petals drift through the air, a samurai player character practices sword moves in the square, villagers watch nearby, and the interface includes an inventory panel, stamina gauge, skill cooldown timers, and subtle quest UI. Cozy retro console feeling, soft ambient pastel lighting, crisp pixel details, 16:9 gameplay composition.
+    ```
+
+    ```bash CLI
+    gpt-image -p "Create an isometric pixel-art RPG screenshot of a traditional Japanese village during cherry blossom season. Sakura petals drift through the air, a samurai player character practices sword moves in the square, villagers watch nearby, and the interface includes an inventory panel, stamina gauge, skill cooldown timers, and subtle quest UI. Cozy retro console feeling, soft ambient pastel lighting, crisp pixel details, 16:9 gameplay composition." \
+      --size 1536x1024 \
+      --quality high \
+      -f pixel-rpg-village.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Enumerating every HUD element by name — health bar, stamina gauge, minimap, ability buttons, cooldown numbers — significantly improves how fully the model populates the interface. Adding "screen-capture feel, not a poster" steers the composition toward a believable gameplay screenshot rather than a cinematic key art render.
+</Tip>

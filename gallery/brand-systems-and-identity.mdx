@@ -1,0 +1,51 @@
+---
+title: "Brand identity prompts for GPT Image 2"
+description: "Curated GPT Image 2 prompts for brand identity design: logo concepts, color palette sheets, brand guideline mockups, and visual identity systems."
+---
+
+GPT Image 2 can generate cohesive brand identity assets — logo lockups with variations, annotated color palette cards, and realistic business card mockups. The prompts below demonstrate three presentation formats used in real identity projects: a full brand sheet with logo anatomy and usage examples, a standalone color and typography card, and a physical card mockup in perspective. Providing hex codes, typeface names, and explicit layout sections gives the model the specificity it needs to produce a presentation-quality result.
+
+<AccordionGroup>
+  <Accordion title="Coffee roastery brand sheet" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A brand identity sheet for a fictional specialty coffee roastery called "Anchor & Bean". Left side: primary logo — an anchor with a coffee bean integrated into the shank, wordmark in a warm humanist sans-serif below. Right side: logo variations (dark, light, monochrome), brand colors (deep navy #1B2A4A, warm cream #F5EDD3, roast amber #C4622D), typeface specimen, and usage examples on packaging. Clean white background, editorial presentation.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A brand identity sheet for a fictional specialty coffee roastery called \"Anchor & Bean\". Left side: primary logo — an anchor with a coffee bean integrated into the shank, wordmark in a warm humanist sans-serif below. Right side: logo variations (dark, light, monochrome), brand colors (deep navy #1B2A4A, warm cream #F5EDD3, roast amber #C4622D), typeface specimen, and usage examples on packaging. Clean white background, editorial presentation." \
+      --size 1536x1024 \
+      --quality high \
+      -f anchor-bean-brand-sheet.png
+    ```
+  </Accordion>
+
+  <Accordion title="Wellness app color and type card" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A brand color palette presentation card for a wellness app called "Stillwater". Primary palette: sage green, warm sand, off-white, deep teal. Each swatch labeled with hex code, RGB, and CMYK. Typography pairing below: Playfair Display for headings paired with Source Sans Pro for body. Minimal, airy layout.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A brand color palette presentation card for a wellness app called \"Stillwater\". Primary palette: sage green, warm sand, off-white, deep teal. Each swatch labeled with hex code, RGB, and CMYK. Typography pairing below: Playfair Display for headings paired with Source Sans Pro for body. Minimal, airy layout." \
+      --size 1536x1024 \
+      --quality high \
+      -f stillwater-palette-card.png
+    ```
+  </Accordion>
+
+  <Accordion title="Architect business card mockup" description="Size: landscape · Quality: high · Source: Curated">
+    ```
+    A business card mockup for a fictional architect named Elena Voss. Front: clean white card with name in small elegant serif, title "Principal Architect", email and phone in light gray. Back: full-bleed dark navy with a minimal geometric mark. Realistic 3D perspective view on a textured linen surface.
+    ```
+
+    ```bash CLI
+    gpt-image -p "A business card mockup for a fictional architect named Elena Voss. Front: clean white card with name in small elegant serif, title \"Principal Architect\", email and phone in light gray. Back: full-bleed dark navy with a minimal geometric mark. Realistic 3D perspective view on a textured linen surface." \
+      --size 1536x1024 \
+      --quality high \
+      -f architect-business-card.png
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Specifying exact hex codes for brand colors anchors the palette and prevents the model from drifting toward generic hues. For logo sheets, listing the exact variation names you need ("dark, light, monochrome") in the prompt ensures each appears in the output.
+</Tip>

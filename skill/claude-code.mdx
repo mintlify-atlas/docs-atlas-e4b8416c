@@ -1,0 +1,86 @@
+---
+title: 'Install gpt-image as a Claude Code skill'
+description: 'Add the gpt-image plugin to Claude Code via the marketplace and use GPT Image 2 generation and editing from natural language in your agent sessions.'
+---
+
+Claude Code supports a plugin system that lets you extend the agent with skills loaded from a marketplace or a local path. The `gpt-image` plugin installs the full skill — manifest, generation script, and 162-prompt gallery atlas — so Claude Code can generate and edit images with GPT Image 2 directly from your conversation.
+
+## Prerequisites
+
+- Claude Code installed and running.
+- `OPENAI_API_KEY` set in your environment or in `~/.env`.
+
+## Installation
+
+<Steps>
+  <Step title="Add the marketplace source">
+    Open Claude Code and run the following command in the agent chat to register the `wuyoscar-skills` marketplace:
+
+    ```text
+    /plugin marketplace add wuyoscar/gpt_image_2_skill
+    ```
+  </Step>
+
+  <Step title="Install the plugin">
+    Once the marketplace source is registered, install the `gpt-image` plugin:
+
+    ```text
+    /plugin install gpt-image@wuyoscar-skills
+    ```
+
+    Claude Code downloads the plugin files, including the skill manifest at `SKILL.md` and the generation script at `skills/gpt-image/scripts/generate.py`.
+  </Step>
+
+  <Step title="Verify the installation">
+    Ask Claude Code to confirm the skill is available:
+
+    ```text
+    What skills do you have loaded?
+    ```
+
+    You should see `gpt-image` listed among the active skills.
+  </Step>
+</Steps>
+
+## How the plugin works
+
+When Claude Code loads the plugin, it reads `SKILL.md` to understand the skill's capabilities, CLI flags, endpoint-selection rules, and reference-loading policy. From that point on, the skill is available for the rest of your session.
+
+When you make an image request, Claude Code invokes the generation script using the plugin root path:
+
+```bash
+uv run "$CLAUDE_PLUGIN_ROOT/skills/gpt-image/scripts/generate.py" -p "PROMPT" [options]
+```
+
+The script calls `POST /v1/images/generations` for text-to-image requests and `POST /v1/images/edits` for reference-based edits. Output is written to disk and the file path is printed to stdout.
+
+<Note>
+  The skill loads reference files on demand, not all at once. Claude Code reads `references/gallery.md` first as a category index, then fetches only the relevant `references/gallery-<category>.md` file. This keeps the context window free for your conversation.
+</Note>
+
+## Using the skill in natural language
+
+Once installed, you can make image requests in plain English. Claude Code selects the right parameters and invokes the script for you:
+
+- "Generate the Boston Spring poster from the skill gallery."
+- "Create a 4K cyberpunk skyline at dusk, high quality."
+- "Restyle this photo as a watercolor painting." *(attach a reference image)*
+- "Replace the sky in this photo with an aurora borealis." *(attach the photo and a mask)*
+
+For gallery-based requests, Claude Code reads the gallery index to find a matching prompt pattern before generating.
+
+## Updating the plugin
+
+Use Claude Code's built-in update flow to keep the plugin current:
+
+```text
+/plugin update gpt-image
+```
+
+## Environment
+
+The script reads your OpenAI API key from `OPENAI_API_KEY` in the environment or from `~/.env`. No additional configuration is required after the plugin is installed.
+
+<Tip>
+  Use `--quality low` for rapid drafts during exploration, and `--quality high` for final assets, posters, Chinese text, and dense diagrams.
+</Tip>

@@ -1,0 +1,78 @@
+---
+title: 'Agentic skill: gpt-image for agent runtimes'
+description: 'Load the gpt-image skill into Claude Code, Codex, OpenClaw, Hermes Agent, or any skill-capable agent runtime to generate and edit images with GPT Image 2.'
+---
+
+An **agentic skill** is a self-contained module — a directory with a manifest, scripts, and reference files — that skill-capable agent runtimes can load and invoke on behalf of users. The `gpt-image` skill packages the GPT Image 2 CLI, a 162-prompt gallery atlas, and three prompt-craft reference documents into a single folder that any compatible runtime can discover and use. Once installed, you can ask your agent in natural language — for example, "generate the Boston Spring poster from the skill gallery" — and the runtime handles the rest.
+
+## Skill directory layout
+
+The skill lives under `skills/gpt-image/` in the repository and follows a standard layout:
+
+<Tree>
+  <Tree.Folder name="skills/gpt-image" defaultOpen>
+    <Tree.File name="SKILL.md" />
+    <Tree.Folder name="scripts" defaultOpen>
+      <Tree.File name="generate.py" />
+    </Tree.Folder>
+    <Tree.Folder name="references" defaultOpen>
+      <Tree.File name="gallery.md" />
+      <Tree.File name="gallery-&lt;category&gt;.md" />
+      <Tree.File name="craft.md" />
+      <Tree.File name="openai-cookbook.md" />
+    </Tree.Folder>
+    <Tree.Folder name="agents" />
+  </Tree.Folder>
+</Tree>
+
+`SKILL.md` is the skill manifest — runtimes read it on load to understand the skill's capabilities, CLI flags, endpoint-selection rules, and reference loading policy. `scripts/generate.py` is the executable entry point that wraps the OpenAI `images.generate` and `images.edit` endpoints. The `references/` directory contains the prompt atlas and craft guides described below. The `agents/` directory holds any agent-specific overrides or helpers.
+
+## Reference files
+
+Three reference documents live in `references/` and are loaded on demand by the agent — not all at once. Each serves a distinct purpose:
+
+**`gallery.md`** — A lightweight routing index for the split 162-prompt Scale Atlas. It lists every category (Anime & Manga, Gaming, Typography & Posters, UI/UX Mockups, Research Paper Figures, and 27 more) and maps each one to its corresponding `gallery-<category>.md` file. Agents read this file first to identify the right category, then load only the relevant category file.
+
+**`craft.md`** — An expanded 19-section prompt-craft checklist covering Scale-first usage, JSON/config-style prompts, multi-panel boards, UI specs, data and diagram grammar, edit invariants, reference workflows, dense text, and category mini-schemas. Load this when refining or debugging a prompt after selecting a gallery pattern.
+
+**`openai-cookbook.md`** — A verbatim Markdown capture of OpenAI's official GPT Image prompting guide (1,004 lines), including the authoritative parameter-coverage table and every use-case example from sections 4 and 5. Load this for questions about official parameter semantics, endpoint behavior, model migration, or workflows not covered by the gallery.
+
+## Reference loading policy
+
+<Note>
+  Always read `gallery.md` first as the category index, then load only the relevant `gallery-<category>.md` file(s). Do not load every category file — the atlas is split precisely to avoid overflowing agent context windows.
+</Note>
+
+The recommended order is:
+
+1. Read `references/gallery.md` to identify the matching category.
+2. Load `references/gallery-<category>.md` for concrete prompt patterns.
+3. Use `references/craft.md` to refine the prompt structure.
+4. Consult `references/openai-cookbook.md` for authoritative API or model questions.
+
+## Entry points
+
+The skill exposes two execution paths depending on how it is installed:
+
+| Method | Command |
+|--------|---------|
+| Plugin path (Claude Code) | `uv run "$CLAUDE_PLUGIN_ROOT/skills/gpt-image/scripts/generate.py" -p "PROMPT"` |
+| Direct CLI | `gpt-image -p "PROMPT"` |
+
+Both paths accept identical flags. The plugin path is used automatically when Claude Code invokes the skill; the direct CLI is available after installing with `uvx` or `uv tool install`.
+
+## Install on your runtime
+
+Choose the guide for your agent runtime:
+
+<CardGroup cols={3}>
+  <Card title="Claude Code" icon="code" href="/skill/claude-code">
+    Install via the Claude Code plugin marketplace with two commands.
+  </Card>
+  <Card title="Codex" icon="terminal" href="/skill/codex">
+    Use the built-in `$skill-installer` or copy the folder manually.
+  </Card>
+  <Card title="Other runtimes" icon="puzzle" href="/skill/other-runtimes">
+    Generic symlink install for OpenClaw, Hermes Agent, and others.
+  </Card>
+</CardGroup>

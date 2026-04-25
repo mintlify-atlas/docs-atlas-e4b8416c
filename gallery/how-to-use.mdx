@@ -1,0 +1,71 @@
+---
+title: "How to use the GPT Image 2 prompt gallery"
+description: "Learn how to copy gallery prompts into the CLI or Python SDK, adapt size and quality settings, and use the split reference atlas with agent runtimes."
+---
+
+Each gallery entry contains everything you need to reproduce the image: the full prompt text, a size value (`square`, `portrait`, or `landscape`), a quality level (`low`, `medium`, or `high`), and a source label. The steps below walk through taking a gallery entry from the page to a working command in under a minute.
+
+<Steps>
+  <Step title="Pick a category">
+    Browse the [gallery overview](/gallery) and open the category that matches what you want to create. Each category page groups related prompts and shows the recommended size and quality for each one.
+  </Step>
+  <Step title="Copy the prompt">
+    Inside each accordion, copy the full prompt text. Prompts are written to be used verbatim — they already include style direction, composition notes, and mood cues. You can adapt any part of the prompt after your first run.
+  </Step>
+  <Step title="Assemble the CLI or SDK call">
+    Map the gallery entry metadata to the command parameters:
+
+    | Gallery field | CLI flag | SDK parameter |
+    |---|---|---|
+    | Prompt text | `-p "PROMPT"` | `prompt="PROMPT"` |
+    | Size: portrait | `--size 1024x1536` | `size="1024x1536"` |
+    | Size: landscape | `--size 1536x1024` | `size="1536x1024"` |
+    | Size: square | `--size 1024x1024` | `size="1024x1024"` |
+    | Quality | `--quality high` | `quality="high"` |
+
+    <CodeGroup>
+
+    ```bash CLI
+    gpt-image -p "A silver-haired young woman in a flowing white dress stands on a fog-covered mountain at dawn, impressionist oil painting style, soft golden light, loose brushwork" \
+      --size 1024x1536 \
+      --quality high \
+      -f out.png
+    ```
+
+    ```python Python SDK
+    from openai import OpenAI
+
+    client = OpenAI()
+
+    response = client.images.generate(
+        model="gpt-image-2",
+        prompt="A silver-haired young woman in a flowing white dress stands on a fog-covered mountain at dawn, impressionist oil painting style, soft golden light, loose brushwork",
+        size="1024x1536",
+        quality="high",
+    )
+
+    image_url = response.data[0].url
+    ```
+
+    </CodeGroup>
+  </Step>
+  <Step title="Adjust size and quality">
+    Size and quality directly affect generation time and cost. Start with the gallery's recommended settings, then tune to your needs:
+
+    - `quality=low` — fastest, lowest cost. Good for iteration and batch exploration.
+    - `quality=medium` — balanced. Suitable for most non-final outputs.
+    - `quality=high` — sharpest detail, highest fidelity. Use for final assets.
+
+    Size affects aspect ratio only — `square` (1024×1024), `portrait` (1024×1536), or `landscape` (1536×1024).
+  </Step>
+</Steps>
+
+## Reference gallery atlas
+
+The gallery is also distributed as a split reference atlas — a `gallery.md` root file that links out to `gallery-*.md` files, one per category. This format is optimized for agent runtimes and LLM context windows: the agent loads only the categories it needs rather than all 162 prompts at once.
+
+When building an agent that generates images, point it at the atlas root and let it retrieve individual category files on demand.
+
+<Tip>
+  Start exploration runs at `quality=low` to iterate quickly across many prompts. Once you find a prompt that works, switch to `quality=high` for the final output.
+</Tip>
